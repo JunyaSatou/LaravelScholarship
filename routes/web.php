@@ -15,7 +15,7 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-// http://www.authapp.test/login のルーティング
+// http://www.scholarship.test/login のルーティング
 Route::get('/login', 'AuthAppController@index');
 Route::post('/login', 'AuthAppController@auth_check');
 Route::post('/logout', 'AuthAppController@logout');
