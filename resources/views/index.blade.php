@@ -6,7 +6,7 @@
         text-align: center;
     }
 </style>
-@section ('title', 'Index')
+@section ('title', 'ログイン画面')
 
 @section ('content')
     <div id="info">
