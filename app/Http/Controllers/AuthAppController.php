@@ -57,7 +57,11 @@ class AuthAppController extends Controller{
                 // ログの無効化
                 $user->logs()->update(['updated_at' => date("Y/m/d H:i:s")]);
 
-                return view('index', ['msg' => "ようこそ、" . $user->name . "さん！！"]);
+                return view('index', [
+                    'msg' => "ようこそ、" . $user->name . "さん！！",
+                    'email' => $user->email,
+                    'name' => $user->name,
+                    ]);
             }
 
             // エラーログの登録

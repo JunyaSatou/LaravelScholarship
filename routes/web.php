@@ -19,4 +19,5 @@ Route::get('/', function () {
 Route::get('/login', 'AuthAppController@index');
 Route::post('/login', 'AuthAppController@auth_check');
 Route::post('/logout', 'AuthAppController@logout');
+Route::post('/login/action', 'ScholarshipController@index');
 

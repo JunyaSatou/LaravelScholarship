@@ -21,4 +21,13 @@ class User extends Model{
     public function logs(){
         return $this->hasmany('App\Log', 'email', 'email');
     }
+
+    /**
+     * UserクラスとMeisaiクラスは1対多の関係
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function meisais(){
+        return $this->hasmany('App\Meisai', 'email', 'email');
+    }
 }
