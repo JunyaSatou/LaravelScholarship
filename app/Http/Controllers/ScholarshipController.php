@@ -6,19 +6,41 @@ use Illuminate\Http\Request;
 use PHPUnit\Runner\ResultCacheExtension;
 use App\User;
 use App\Meisai;
+use Illuminate\Support\Facades\View;
+use Symfony\Component\VarDumper\VarDumper;
 
 class ScholarshipController extends Controller
 {
-    public function create(Request $request)
+    public function make(Request $request)
     {
-        // 新規シミュレーションを実行
-        var_dump($request->name);                    
+        var_dump($request->finyear);
     }
 
+    /**
+     * setting画面を表示
+     *
+     * @param Request $request
+     * @return void
+     */
+    public function create(Request $request)
+    {
+        return view('setting', [
+            'email' => $request->email,
+            'name' => $request->name,
+        ]);                
+    }
+
+    /**
+     * 保存処理（削除予定）
+     *
+     * @param Request $request
+     * @return void
+     */
     public function save(Request $request)
     {
-        var_dump($request->items);
-        //DBにシミュレーション結果を保存
+        // var_dump($request->items);
+
+        // emailからUserを取得する。
         $user = User::where('email', $request->email)->first();
 
         // var_dump($user);
@@ -47,6 +69,12 @@ class ScholarshipController extends Controller
         ]);
     }
 
+    /**
+     * 履歴から奨学金のシミュレーション結果を取得
+     *
+     * @param Request $request
+     * @return void
+     */
     public function history(Request $request)
     {
         // 検索履歴から該当者を表示
