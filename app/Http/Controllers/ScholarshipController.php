@@ -4,26 +4,31 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use PHPUnit\Runner\ResultCacheExtension;
+use App\User;
+use App\Http\Controllers\functions;
 
-class ScholarshipController extends Controller{
-
-    public function index(Request $request){
-        // createSimulationへルーティング
-        if ($request->pattern == 1) {
-            createSimulation($request);
-        } 
-        
-        // getSimulationHistoryへルーティング
-        if ($request->pattern == 2) {
-            getSimulationHistory($request);
-        }
+class ScholarshipController extends Controller
+{
+    public function create(Request $request)
+    {
+        // 新規シミュレーションを実行
+        var_dump($request->name);                    
     }
 
-    public function createSimulation(Request $request){
+    public function history(Request $request)
+    {
+        // 検索履歴から該当者を表示
+        $user = User::where('email', $request->email)->first();
 
+        // ORMによりユーザーに紐づく明細をすべて取得する。
+        $meisais = $user->meisais()->orderBy('zankai', 'desc')->get();
+
+        return view('show', [
+            'items' => $meisais,
+            'name' => $request->name,
+            'email' => $request->email,
+        ]);
     }
 
-    public function getSimulationHistory(Request $request){
-
-    }
 }
+ 

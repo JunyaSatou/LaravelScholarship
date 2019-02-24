@@ -16,14 +16,15 @@ class CreateMeisaisTable extends Migration
         Schema::create('meisais', function (Blueprint $table) {
             $table->increments('id');
             $table->string('email');
-            $table->integer('zankai');
-            $table->integer('zangaku');
+            $table->string('zankai');
+            $table->string('zangaku');
             $table->string('hikibi');
-            $table->integer('heisaigaku');
-            $table->integer('heisaimoto');
-            $table->integer('suerisoku');
-            $table->integer('risoku');
-            $table->integer('hasu');
+            $table->string('hensaigaku');
+            $table->string('hensaimoto');
+            $table->string('suerisoku');
+            $table->string('risoku');
+            $table->string('hasu');
+            $table->string('atozangaku');
             $table->timestamps();
         });
     }

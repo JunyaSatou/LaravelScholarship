@@ -15,29 +15,30 @@
         @endif
     </div>
     <div id="content">
-        <form action="/login/action" method="POST">
-            {{ csrf_field() }}
-            <table align="center" border="1pt">
-                <tr>
-                    <th align="left">返済シミュレーション</th>
-                    <td>
-                        <input type="hidden" name="pattern" value="1">
+        <table align="center" border="1pt">
+            <tr>
+                <th align="left">返済シミュレーション</th>
+                <td>
+                    <form action="/login/action1" method="POST">
+                        {{ csrf_field() }}
                         <input type="hidden" name="name" value="{{$name}}">
                         <input type="hidden" name="email" value="{{$email}}">
                         <input type="submit" value="返済シミュレーション">
-                    </td>
-                </tr>
-                <tr>
-                    <th align="left">以前の履歴を復元</th>
-                    <td>
-                        <input type="hidden" name="pattern" value="2">
+                    </form>
+                </td>
+            </tr>
+            <tr>
+                <th align="left">履歴を復元</th>
+                <td>
+                    <form action="/login/action3" method="POST">
+                        {{ csrf_field() }}
                         <input type="hidden" name="name" value="{{$name}}">
                         <input type="hidden" name="email" value="{{$email}}">
                         <input type="submit" value="履歴を復元">
-                    </td>
-                </tr>
-            </table>
-        </form>
+                    </form>
+                </td>
+            </tr>
+        </table>
     </div>
     <div>
         <form action="/logout" method="post">

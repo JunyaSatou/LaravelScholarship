@@ -13,4 +13,8 @@ class Meisai extends Model{
     public function user(){
         return $this->belongsTo('App\User', 'email', 'email');
     }
+
+    public function scopeGreatThanHikibi($query){
+        $query->where('hikibi', '>=', date('Y年M月d日', time()));
+    }
 }
