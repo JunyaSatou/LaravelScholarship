@@ -5,6 +5,9 @@
         margin-top:50px;
         text-align: center;
     }
+    table{
+        font-size: 14pt;
+    }
 </style>
 @section ('title', 'ログイン画面')
 
@@ -17,8 +20,8 @@
     <div id="content">
         <table align="center" border="1pt">
             <tr>
-                <th align="left">返済シミュレーション</th>
-                <td>
+                <td align="left">返済シミュレーション</td>
+                <td align="center" valign="middle">
                     <form action="/login/action1" method="POST">
                         {{ csrf_field() }}
                         <input type="hidden" name="name" value="{{$name}}">
@@ -28,8 +31,8 @@
                 </td>
             </tr>
             <tr>
-                <th align="left">履歴を復元</th>
-                <td>
+                <td align="left">履歴を復元</td>
+                <td align="center" valign="middle">
                     <form action="/login/action3" method="POST">
                         {{ csrf_field() }}
                         <input type="hidden" name="name" value="{{$name}}">

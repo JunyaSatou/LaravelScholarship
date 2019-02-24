@@ -21,7 +21,9 @@
             @endforeach
         </table>
     </div>
-
+    @if ($msg != '')
+        <p align="center">{{$msg}}</p>
+    @endif
     <div id="content">
         <table align="center">
             <tr>
@@ -38,6 +40,7 @@
                         {{ csrf_field() }}
                         <input type="hidden" name="name" value="{{$name}}">
                         <input type="hidden" name="email" value="{{$email}}">
+                        {{-- <input type="hidden" name="items" value="{{$items}}"> --}}
                         <input type="submit" value="保存">
                     </form>
                 </td>    
