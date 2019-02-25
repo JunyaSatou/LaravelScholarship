@@ -8,8 +8,11 @@
     table{
         font-size: 14pt;
     }
+    .rows {
+        vertical-align: middle;
+    }
 </style>
-@section ('title', 'ログイン画面')
+@section ('title', 'MENU')
 
 @section ('content')
     <div id="msg">
@@ -19,25 +22,25 @@
     </div>
     <div id="content">
         <table align="center" border="1pt">
-            <tr>
-                <td align="left">返済シミュレーション</td>
+            <tr class="rows">
+                <th align="left">新規シミュレーション</th>
                 <td align="center" valign="middle">
-                    <form action="/login/action1" method="POST">
+                    <form action="/login/new" method="POST">
                         {{ csrf_field() }}
                         <input type="hidden" name="name" value="{{$name}}">
                         <input type="hidden" name="email" value="{{$email}}">
-                        <input type="submit" value="返済シミュレーション">
+                        <input type="submit" value="新規シミュレーション">
                     </form>
                 </td>
             </tr>
-            <tr>
-                <td align="left">履歴を復元</td>
+            <tr class="rows">
+                <th align="left">履歴から復元</th>
                 <td align="center" valign="middle">
-                    <form action="/login/action3" method="POST">
+                    <form action="/login/history" method="POST">
                         {{ csrf_field() }}
                         <input type="hidden" name="name" value="{{$name}}">
                         <input type="hidden" name="email" value="{{$email}}">
-                        <input type="submit" value="履歴を復元">
+                        <input type="submit" value="履歴から復元">
                     </form>
                 </td>
             </tr>

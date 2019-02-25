@@ -55,7 +55,7 @@ class AuthAppController extends Controller{
                 $user->logs()->save((New Log)->fill(['ip_address' => $request->ip(), 'status' => 0]));
 
                 // ログの無効化
-                $user->logs()->update(['updated_at' => date("Y/m/d H:i:s")]);
+                $user->logs()->update(['status' => 0, 'updated_at' => date("Y/m/d H:i:s")]);
 
                 return view('index', [
                     'msg' => "ようこそ、" . $user->name . "さん！！",
@@ -68,7 +68,7 @@ class AuthAppController extends Controller{
             $user->logs()->save((New Log)->fill(['ip_address' => $request->ip(), 'status' => 1]));
 
             // 処理日に出力されているエラーログの個数を取得
-            $log_count = $user->logs()->active()->count();
+            $log_count = $user->logs()->active()->activeDate()->count();
 
             // エラー件数が５件以上のとき、アカウントをロックし、エラー画面を表示
             if ($log_count >= 5){
@@ -93,11 +93,9 @@ class AuthAppController extends Controller{
         }
 
         // エラーログの登録
-        $log = new Log;
-        $log->email = $request->email;
-        $log->ip_address = $request->ip();
-        $log->status = 1;
-        $log->save();
+        $user = new User;
+        $user->email = $request->email;
+        $user->logs()->save((new Log)->fill(['ip_address' => $request->ip(), 'status' => 1]));
 
         // ログイン画面を表示
         return view('login', ['msg' => "※ email 又は password が違います。"]);

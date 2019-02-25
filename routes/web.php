@@ -15,12 +15,11 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-// http://www.scholarship.test/login のルーティング
+// http://laravelscholarship.test/login のルーティング
 Route::get('/login', 'AuthAppController@index');
 Route::post('/login', 'AuthAppController@auth_check');
 Route::post('/logout', 'AuthAppController@logout');
-Route::post('/login/action1', 'ScholarshipController@create');
-Route::post('/login/action2', 'ScholarshipController@save');
-Route::post('/login/action3', 'ScholarshipController@history');
-Route::post('/login/action4', 'ScholarshipController@make');
+Route::post('/login/new', 'ScholarshipController@create');
+Route::post('/login/history', 'ScholarshipController@history');
+Route::post('/login/start', 'ScholarshipController@make');
 

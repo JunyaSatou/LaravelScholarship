@@ -8,19 +8,44 @@ use App\User;
 use App\Meisai;
 use Illuminate\Support\Facades\View;
 use Symfony\Component\VarDumper\VarDumper;
+use App\Http\Requests\ScholarshipRequest;
 
 class ScholarshipController extends Controller
 {
-    public function make(Request $request)
+    public function make(ScholarshipRequest $request)
     {
-        var_dump($request->finyear);
+        var_dump($request);
+
+//        // emailからUserを取得する。
+//        $user = User::where('email', $request->email)->first();
+//
+//        $user->meisais()->save((new Meisai)->fill([
+//            'zankai' => '2回',
+//            'zangaku' => '16,270円',
+//            'hikibi' => '2018年4月27日',
+//            'hensaigaku' => '16,270円',
+//            'hensaimoto' => '16,170円',
+//            'suerisoku' => '3円',
+//            'risoku' => '97円',
+//            'hasu' => '0円',
+//            'atozangaku' => '0円',
+//        ]));
+//
+//        $meisais = $user->meisais()->get();
+//
+//        return view('show',[
+//            'email' => $request->email,
+//            'name' => $request->name,
+//            'items' => $meisais,
+//            'msg' => '',
+//        ]);
     }
 
     /**
      * setting画面を表示
      *
      * @param Request $request
-     * @return void
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function create(Request $request)
     {
@@ -34,7 +59,7 @@ class ScholarshipController extends Controller
      * 保存処理（削除予定）
      *
      * @param Request $request
-     * @return void
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function save(Request $request)
     {
@@ -73,7 +98,7 @@ class ScholarshipController extends Controller
      * 履歴から奨学金のシミュレーション結果を取得
      *
      * @param Request $request
-     * @return void
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function history(Request $request)
     {

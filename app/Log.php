@@ -15,8 +15,21 @@ class Log extends Model{
         return $this->belongsTo('App\User', 'email','email');
     }
 
+    /**
+     * 有効ログの取得
+     *
+     * @param $query
+     */
     public function scopeActive($query){
-        $query->where('status', '=', 1)
-            ->where('created_at', '>=', date("Y/m/d 00:00:00"));
+        $query->where('status', '=', 1);
+    }
+
+    /**
+     * 処理日のログを取得
+     *
+     * @param $query
+     */
+    public function scopeActiveDate($query){
+        $query->where('created_at', '>=', date("Y/m/d 00:00:00"));
     }
 }
