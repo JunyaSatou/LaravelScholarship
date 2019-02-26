@@ -28,6 +28,7 @@ class ScholarshipController extends Controller
         $scholarship->calcurateItems();
         $scholarship->hensaiSimulation();
 
+//        $meisais = $user->meisais()->orderBy('zankai', 'desc')->get();
         $meisais = $user->meisais()->get();
 
         return view('show',[
@@ -64,7 +65,8 @@ class ScholarshipController extends Controller
         $user = User::where('email', $request->email)->first();
 
         // ORMによりユーザーに紐づく明細をすべて取得する。
-        $meisais = $user->meisais()->orderBy('zankai', 'desc')->get();
+//        $meisais = $user->meisais()->orderBy('zankai', 'desc')->get();
+        $meisais = $user->meisais()->get();
 
         return view('show', [
             'items' => $meisais,
