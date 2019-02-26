@@ -31,7 +31,7 @@
         <table align="center">
             <tr>
                 <td>
-                    <form action="/login/new" method="POST">
+                    <form action="/login/setting" method="POST">
                         {{ csrf_field() }}
                         <input type="hidden" name="name" value="{{$name}}">
                         <input type="hidden" name="email" value="{{$email}}">

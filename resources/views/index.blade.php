@@ -10,6 +10,10 @@
     }
     .rows {
         vertical-align: middle;
+        height: 30pt;
+    }
+    .button{
+        margin-top: 15pt;
     }
 </style>
 @section ('title', 'MENU')
@@ -23,13 +27,15 @@
     <div id="content">
         <table align="center" border="1pt">
             <tr class="rows">
-                <th align="left">新規シミュレーション</th>
-                <td align="center" valign="middle">
-                    <form action="/login/new" method="POST">
+                <th align="left" width="200">新規シミュレーション</th>
+                <td align="center" valign="middle" width="130">
+                    <form action="/login/setting" method="POST">
                         {{ csrf_field() }}
                         <input type="hidden" name="name" value="{{$name}}">
                         <input type="hidden" name="email" value="{{$email}}">
-                        <input type="submit" value="新規シミュレーション">
+                        <div class="button">
+                            <input type="submit" value="新規シミュレーション">
+                        </div>
                     </form>
                 </td>
             </tr>
@@ -40,7 +46,9 @@
                         {{ csrf_field() }}
                         <input type="hidden" name="name" value="{{$name}}">
                         <input type="hidden" name="email" value="{{$email}}">
-                        <input type="submit" value="履歴から復元">
+                        <div class="button">
+                            <input type="submit" value="履歴から復元">
+                        </div>
                     </form>
                 </td>
             </tr>

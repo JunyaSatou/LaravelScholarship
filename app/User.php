@@ -30,4 +30,8 @@ class User extends Model{
     public function meisais(){
         return $this->hasmany('App\Meisai', 'email', 'email');
     }
+
+//    public function scholarship(){
+//        return $this->hasOne('App\Scholarship', 'email', 'email')
+//    }
 }

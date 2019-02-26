@@ -36,7 +36,7 @@ class AuthAppController extends Controller{
      * @param AuthRequest $request
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function auth_check(AuthRequest $request){
+    public function auth(AuthRequest $request){
 
         // 該当レコードを検索
         $user = User::where('email', $request->email)->first();

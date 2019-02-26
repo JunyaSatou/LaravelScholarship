@@ -14,47 +14,46 @@
         text-align: center;
         margin-top: 10pt;
     }
+    .msg{
+        color: red;
+    }
 </style>
 @section ('title', '設定')
 
 @section ('content')
     <div id="content">
-        <form action="/login/start" method="post">
+        <form action="/login/create" method="post">
             {{ csrf_field() }}
             <input type="hidden" name="name" value="{{$name}}">
             <input type="hidden" name="email" value="{{$email}}">
             <table align="center">
                 @if ($errors->has('goukei'))
-                    <tr><th>ERROR：</th><td>{{$errors->first('goukei')}}</td></tr>
+                    <tr class="msg"><th align="right">ERROR：</th><td align="left">{{$errors->first('goukei')}}</td></tr>
                 @endif
                 <tr>
-                    <td align="left">借用金額</td>
-                    {{--<td><input type="number" name="goukei" placeholder="10000">円</td>--}}
-                    <td><input type="text" name="goukei">円</td>
+                    <td align="right" width="140">借用金額：</td>
+                    <td align="left" width="250"><input type="text" name="goukei" size="15" value="{{old('goukei')}}"> 円</td>
                 </tr>
                 @if ($errors->has('finyear'))
-                    <tr><th>ERROR：</th><td>{{$errors->first('finyear')}}</td></tr>
+                    <tr class="msg"><th align="right">ERROR：</th><td align="left">{{$errors->first('finyear')}}</td></tr>
                 @endif
                 <tr>
-                    <td align="left">借用終了年</td>
-                    {{--<td><input type="number" name="finyear" placeholder="2019">年</td>--}}
-                    <td><input type="text" name="finyear">年</td>
+                    <td align="right" width="140">借用終了年：</td>
+                    <td align="left" width="250"><input type="text" name="finyear" size="15" value="{{old('finyear')}}"> 年</td>
                 </tr>
                 @if ($errors->has('finmonth'))
-                    <tr><th>ERROR：</th><td>{{$errors->first('finmonth')}}</td></tr>
+                    <tr class="msg"><th align="right">ERROR：</th><td align="left">{{$errors->first('finmonth')}}</td></tr>
                 @endif
                 <tr>
-                    <td align="left">借用終了月</td>
-                    {{--<td><input type="number" name="finmonth" placeholder="3">月</td>--}}
-                    <td><input type="text" name="finmonth">月</td>
+                    <td align="right" width="140">借用終了月：</td>
+                    <td align="left" width="250"><input type="text" name="finmonth" size="15" value="{{old('finmonth')}}"> 月</td>
                 </tr>
                 @if ($errors->has('nenri'))
-                    <tr><th>ERROR：</th><td>{{$errors->first('nenri')}}</td></tr>
+                    <tr class="msg"><th align="right">ERROR：</th><td align="left">{{$errors->first('nenri')}}</td></tr>
                 @endif
                 <tr>
-                    <td align="left">年利</td>
-                    {{--<td><input type="text" name="nenri" placeholder="0.16">%</td>--}}
-                    <td><input type="text" name="nenri">%</td>
+                    <td align="right" width="140">年利：</td>
+                    <td align="left" width="250"><input type="text" name="nenri" size="15" value="{{old('nenri')}}"> %</td>
                 </tr>
             </table>
             <div id="submit">

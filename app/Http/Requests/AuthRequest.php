@@ -11,10 +11,7 @@ class AuthRequest extends FormRequest{
      * @return bool
      */
     public function authorize(){
-        if ($this->path() == 'login'){
-            return true;
-        }
-        return false;
+        return true;
     }
 
     /**

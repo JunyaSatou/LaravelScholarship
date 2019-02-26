@@ -5,16 +5,17 @@ namespace App\Http\Requests;
 use Illuminate\Foundation\Http\FormRequest;
 
 class SettingRequest extends FormRequest{
+
+    // web.phpで定義してある Route::get('/login/create')にリダイレクト
+    public $redirect = "/login/create";
+
     /**
      * Determine if the user is authorized to make this request.
      *
      * @return bool
      */
     public function authorize(){
-        if ($this->path() == 'login/start'){
-            return true;
-        }
-        return false;
+        return true;
     }
 
     /**
