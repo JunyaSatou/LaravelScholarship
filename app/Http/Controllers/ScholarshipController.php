@@ -15,6 +15,8 @@ class ScholarshipController extends Controller
 {
     /**
      * @param SettingRequest $request
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     * @throws \Exception
      */
     public function create(SettingRequest $request)
     {

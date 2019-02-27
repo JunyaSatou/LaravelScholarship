@@ -31,7 +31,7 @@ class User extends Model{
         return $this->hasmany('App\Meisai', 'email', 'email');
     }
 
-//    public function scholarship(){
-//        return $this->hasOne('App\Scholarship', 'email', 'email')
-//    }
+    public function scholarship(){
+        return $this->hasOne('App\Scholarship', 'email', 'email');
+    }
 }
