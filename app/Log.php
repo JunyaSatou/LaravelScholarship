@@ -11,10 +11,6 @@ class Log extends Model{
         'email',
     ];
 
-    public function user(){
-        return $this->belongsTo('App\User', 'email','email');
-    }
-
     /**
      * 有効ログの取得
      *

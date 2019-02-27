@@ -9,6 +9,7 @@ class Scholarship extends Model
 {
     /**
      * Scholarship constructor.
+     *
      * @param $email
      * @param $goukei
      * @param $nenri
@@ -25,6 +26,8 @@ class Scholarship extends Model
     }
 
     /**
+     * ScholarshipクラスとMeisaiクラスとの関係は1対多
+     *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function meisais(){
@@ -32,6 +35,8 @@ class Scholarship extends Model
     }
 
     /**
+     * 計算に必要な変数を算出
+     *
      * @return void
      */
     public function calcurateItems(){
@@ -60,6 +65,8 @@ class Scholarship extends Model
     }
 
     /**
+     * 借用金額から返済年数を算出
+     *
      * @return float|int
      */
     public function gesaiNensu(){
@@ -83,6 +90,8 @@ class Scholarship extends Model
     }
 
     /**
+     * 合計の据え置き利息を算出
+     *
      * @return float|int
      */
     public function getTotalSueokiRisoku(){
@@ -91,6 +100,8 @@ class Scholarship extends Model
     }
 
     /**
+     * 月の返済額を算出
+     *
      * @return float|int
      */
     public function getTukiHensaigaku(){
@@ -99,6 +110,8 @@ class Scholarship extends Model
     }
 
     /**
+     * シミュレーションを作成
+     *
      * @throws \Exception
      */
     public function hensaiSimulation(){
@@ -154,6 +167,8 @@ class Scholarship extends Model
    }
 
     /**
+     * 返済予定日が土日の場合はよく月曜日に振替
+     *
      * @param $hensaiDate
      * @return false|string
      * @throws \Exception

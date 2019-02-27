@@ -10,10 +10,20 @@
         text-align: center;
         border: 1pt;
     }
-    #submit{
-        text-align: center;
-        margin-top: 10pt;
-    }
+    /*#submit_button1{*/
+        /*margin-top: 15pt;*/
+        /*width: 140px;*/
+        /*height: 30px;*/
+        /*font-size: 12pt;*/
+        /*font-weight: bold;*/
+    /*}*/
+    /*#submit_button2{*/
+        /*margin-top: 15pt;*/
+        /*width: 140px;*/
+        /*height: 30px;*/
+        /*font-size: 12pt;*/
+        /*font-weight: bold;*/
+    /*}*/
     .msg{
         color: red;
     }
@@ -22,10 +32,16 @@
 
 @section ('content')
     <div id="content">
+        {{--<p>{{$email}}</p>--}}
         <form action="/login/create" method="post">
             {{ csrf_field() }}
-            <input type="hidden" name="name" value="{{$name}}">
-            <input type="hidden" name="email" value="{{$email}}">
+            @if(isset($name))
+                <input type="hidden" name="name" value={{$name}}>
+                <input type="hidden" name="email" value="{{$email}}">
+            @else
+                <input type="hidden" name="name" value={{old('name')}}>
+                <input type="hidden" name="email" value="{{old('email')}}">
+            @endif
             <table align="center">
                 @if ($errors->has('goukei'))
                     <tr class="msg"><th align="right">ERROR：</th><td align="left">{{$errors->first('goukei')}}</td></tr>
@@ -56,9 +72,10 @@
                     <td align="left" width="250"><input type="text" name="nenri" size="15" value="{{old('nenri')}}"> %</td>
                 </tr>
             </table>
-            <div id="submit">
-                <input type="submit" value="シミュレーション開始">
-            </div>
+            <table align="center">
+                <td><input id="submit_button1" type="submit" name="act1" value="シミュレーション開始"></td>
+                <td><input id="submit_button2" type="button" name="act2" value="前に戻る" onclick="history.back()"></td>
+            </table>
         </form>
     </div>
 @endsection

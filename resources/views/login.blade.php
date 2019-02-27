@@ -8,6 +8,11 @@
         text-align: center;
         color: red;
     }
+    /*#submit_button{*/
+        /*width: 80px;*/
+        /*height: 50px;*/
+        /*font-size: 30pt;*/
+    /*}*/
 </style>
 
 @section ('title', 'ログイン画面')
@@ -31,7 +36,7 @@
                     <td width="200" align="right">password（必須）：</td><td width="300"><input type="password" name="password" size="45" value="{{old('password')}}"></td>
                 </tr>
                 <tr align="center">
-                    <td></td><td><input type="submit" value="send"></td>
+                    <td></td><td><input id="submit_button" type="submit" value="send"></td>
                 </tr>
             </table>
         </form>

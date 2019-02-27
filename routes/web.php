@@ -19,8 +19,13 @@ Route::get('/', function () {
 Route::get('/login', 'AuthAppController@index');
 Route::post('/login', 'AuthAppController@auth');
 Route::post('/logout', 'AuthAppController@logout');
+
+// ログイン後に使用可能となるため、URLにloginを含ませる。
+Route::get('/login/setting', 'ScholarshipController@setting');
 Route::post('/login/setting', 'ScholarshipController@setting');
-Route::post('/login/history', 'ScholarshipController@history');
-Route::get('/login/create', 'ScholarshipController@setting');
+Route::get('/login/show', 'ScholarshipController@index');
+Route::post('/login/show', 'ScholarshipController@index');
+Route::get('/login/create', 'ScholarshipController@index');
 Route::post('/login/create', 'ScholarshipController@create');
+Route::get('/login/detail', 'ScholarshipController@detail');
 

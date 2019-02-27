@@ -29,4 +29,8 @@ class Meisai extends Model
     {
         $query->where('hikibi', '>=', date('Y年M月d日 0:0:0', time()));
     }
+
+    public function scopeEqualsID($query, $id){
+        $query->where('id', '=', $id);
+    }
 }
