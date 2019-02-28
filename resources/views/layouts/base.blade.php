@@ -1,6 +1,8 @@
 <html>
     <head>
         <title>@yield('title')</title>
+        <link rel="stylesheet" href="{{ asset('/css/app.css') }}">
+        <script src="https://code.jquery.com/jquery-3.0.0.min.js"></script>
         <style>
             body {
                 font-size:16pt;
@@ -10,7 +12,6 @@
             h1 {
                 font-size:50pt;
                 text-align: center;
-                /*color: black;*/
                 margin:20px 0px -30px 0px;
                 letter-spacing: -4pt;
             }

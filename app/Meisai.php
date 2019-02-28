@@ -27,10 +27,22 @@ class Meisai extends Model
 
     public function scopeGreatThanCreatedAt($query)
     {
-        $query->where('hikibi', '>=', date('Y年M月d日 0:0:0', time()));
+        return $query->where('hikibi', '>=', date('Y年M月d日 0:0:0', time()));
     }
 
     public function scopeEqualsID($query, $id){
-        $query->where('id', '=', $id);
+        return $query->where('id', '=', $id);
+    }
+
+    public function scopeLessThan($query, $id){
+        return $query->where('id', '<=', $id);
+    }
+
+    public function scopeMoreThan($query, $id){
+        return $query->where('id', '>=', $id);
+    }
+
+    public function scopeUsefulEquals($query, $arg, $val, $sel){
+        return $query->where($arg, $sel, $val);
     }
 }

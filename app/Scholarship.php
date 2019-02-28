@@ -131,6 +131,7 @@ class Scholarship extends Model
 
             if($hensaiSogaku <= $this->hensaigaku) {
                 $this->meisais()->save((new Meisai)->fill([
+                    'meisai_id' => str_pad($hensaiCount + 1,4,0,STR_PAD_LEFT),
                     'zankai' => $hensaiKaisu - $hensaiCount . '回',
                     'zangaku' => number_format($hensaiSogaku) . '円',
                     'hikibi' => $whensaiDate,
@@ -148,6 +149,7 @@ class Scholarship extends Model
             }
             else {
                 $this->meisais()->save((new Meisai)->fill([
+                    'meisai_id' => str_pad($hensaiCount + 1,4,0,STR_PAD_LEFT),
                     'zankai' => $hensaiKaisu - $hensaiCount . '回',
                     'zangaku' => number_format($hensaiSogaku) . '円',
                     'hikibi' => $whensaiDate,

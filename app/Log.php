@@ -17,7 +17,7 @@ class Log extends Model{
      * @param $query
      */
     public function scopeActive($query){
-        $query->where('status', '=', 1);
+        return $query->where('status', '=', 1);
     }
 
     /**
@@ -26,6 +26,6 @@ class Log extends Model{
      * @param $query
      */
     public function scopeActiveDate($query){
-        $query->where('created_at', '>=', date("Y/m/d 00:00:00"));
+        return $query->where('created_at', '>=', date("Y/m/d 00:00:00"));
     }
 }

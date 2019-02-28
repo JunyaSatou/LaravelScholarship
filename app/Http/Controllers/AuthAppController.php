@@ -22,15 +22,6 @@ class AuthAppController extends Controller{
     }
 
     /**
-     * ログイン画面へリダイレクト
-     *
-     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
-     */
-    public function logout(){
-        return redirect('/login');
-    }
-
-    /**
      * メールアドレスとパスワードを使用した認証
      *
      * @param AuthRequest $request
