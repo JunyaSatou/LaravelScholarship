@@ -2,11 +2,9 @@
     <head>
         <title>@yield('title')</title>
         <link rel="stylesheet" href="{{ asset('/css/app.css') }}">
-        <script src="https://code.jquery.com/jquery-3.0.0.min.js"></script>
         <style>
             body {
                 font-size:16pt;
-                color:#999;
                 margin: 5px;
             }
             h1 {

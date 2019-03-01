@@ -15,7 +15,7 @@ class CreateMeisaisTable extends Migration
     {
         Schema::create('meisais', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('meisai_id');
+            $table->integer('meisai_id');
             $table->string('email');
             $table->string('zankai');
             $table->string('zangaku');

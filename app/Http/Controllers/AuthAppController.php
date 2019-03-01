@@ -29,6 +29,13 @@ class AuthAppController extends Controller{
      */
     public function auth(AuthRequest $request){
 
+        if(isset($request->name) && isset($request->email)){
+            return view('index', [
+                'email' => $request->email,
+                'name' => $request->name,
+            ]);
+        }
+
         // 該当レコードを検索
         $user = User::where('email', $request->email)->first();
 
@@ -49,7 +56,6 @@ class AuthAppController extends Controller{
                 $user->logs()->update(['status' => 0, 'updated_at' => date("Y/m/d H:i:s")]);
 
                 return view('index', [
-                    'msg' => "ようこそ、" . $user->name . "さん！！",
                     'email' => $user->email,
                     'name' => $user->name,
                     ]);

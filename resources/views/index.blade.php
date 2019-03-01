@@ -25,11 +25,6 @@
 @section ('title', 'MENU')
 
 @section ('content')
-    <div id="msg">
-        @if (isset($msg))
-            <p id="msg" align="center">{{$msg}}</p>
-        @endif
-    </div>
     <div id="content">
         <table align="center" border="1pt">
             <tr>

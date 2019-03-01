@@ -30,19 +30,16 @@ class Meisai extends Model
         return $query->where('hikibi', '>=', date('Y年M月d日 0:0:0', time()));
     }
 
-    public function scopeEqualsID($query, $id){
-        return $query->where('id', '=', $id);
+    public function scopeEqualsID($query, $meisai_id){
+        return $query->where('meisai_id', '=', $meisai_id);
     }
 
-    public function scopeLessThan($query, $id){
-        return $query->where('id', '<=', $id);
+    public function scopeLessThan($query, $meisai_id){
+        return $query->where('meisai_id', '<=', $meisai_id);
     }
 
-    public function scopeMoreThan($query, $id){
-        return $query->where('id', '>=', $id);
+    public function scopeMoreThan($query, $meisai_id){
+        return $query->where('meisai_id', '>=', $meisai_id);
     }
 
-    public function scopeUsefulEquals($query, $arg, $val, $sel){
-        return $query->where($arg, $sel, $val);
-    }
 }

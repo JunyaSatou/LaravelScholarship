@@ -13,9 +13,9 @@ use App\Scholarship;
 use Illuminate\Support\Facades\View;
 use Symfony\Component\VarDumper\VarDumper;
 use App\Http\Requests\SettingRequest;
+use App\Http\Requests\SearchRequest;
 
-class ScholarshipController extends Controller
-{
+class ScholarshipController extends Controller{
 
     /**
      * ユーザーの明細をすべて表示
@@ -23,9 +23,9 @@ class ScholarshipController extends Controller
      * @param Request $request
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function index(Request $request)
-    {
+    public function index(Request $request){
 
+        // emailからUserを取得する。
         $user = User::where('email', $request->email)->first();
 
         // 明細のIDが指定されているとき
@@ -33,8 +33,8 @@ class ScholarshipController extends Controller
             $maxID = $request->searchID;
             $minID = $request->searchID;
         } else {
-            $maxID = $user->meisais()->max('id');
-            $minID = $user->meisais()->min('id');
+            $maxID = $user->meisais()->max('meisai_id');
+            $minID = $user->meisais()->min('meisai_id');
         }
 
         if(isset($maxID) && isset($minID)){
@@ -44,10 +44,10 @@ class ScholarshipController extends Controller
             $meisais = $user->meisais()->get();
         }
 
+//        var_dump($meisais);
         return view('show', [
             'email' => $request->email,
             'name' => $request->name,
-            'title' => $request->title,
             'items' => $meisais,
             'msg' => '',
         ]);
@@ -60,26 +60,7 @@ class ScholarshipController extends Controller
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      * @throws \Exception
      */
-    public function create(Request $request)
-    {
-        // 「シミュレーション開始」の処理
-        // バリデーション
-        $this->validate($request, [
-            'goukei' => 'required|integer',
-            'finyear' => 'required|integer',
-            'finmonth' => 'required|integer',
-            'nenri' => 'required|numeric',
-        ], [
-            'goukei.required' => '借用金額を入力してください',
-            'goukei.integer' => '整数を入力してください',
-            'finyear.required' => '借用終了年を入力してください',
-            'finyear.integer' => '整数を入力してください',
-            'finmonth.required' => '借用終了月を入力してください',
-            'finmonth.integer' => '整数を入力してください',
-            'nenri.required' => '年利を入力してください',
-            'nenri.numeric' => '数値を入力してください',
-        ]);
-
+    public function create(SettingRequest $request){
         // emailからUserを取得する。
         $user = User::where('email', $request->email)->first();
 
@@ -91,7 +72,7 @@ class ScholarshipController extends Controller
         $scholarship->calcurateItems();
         $scholarship->hensaiSimulation();
 
-        return redirect()->action('ScholarshipController@index', ['name' => $request->name, 'email' => $request->email, 'title' => $request->title]);
+        return redirect()->action('ScholarshipController@index', ['name' => $request->name, 'email' => $request->email]);
     }
 
     /**
@@ -100,11 +81,24 @@ class ScholarshipController extends Controller
      * @param Request $request
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function setting(Request $request)
-    {
+    public function setting(Request $request){
         return view('setting', [
             'email' => $request->email,
             'name' => $request->name,
+        ]);
+    }
+
+    public function detail(Request $request){
+        // emailからUserを取得する。
+        $user = User::where('email', $request->email)->first();
+
+        // Userの指定された明細IDのレコードを取得
+        $meisais = $user->meisais()->where('meisai_id', $request->searchID)->get();
+
+        return view('detail', [
+            'email' => $request->email,
+            'name' => $request->name,
+            'items' => $meisais,
         ]);
     }
 
@@ -114,11 +108,14 @@ class ScholarshipController extends Controller
      * @param Request $request
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function delete(Request $request)
-    {
-        Meisai::where('id', $request->id)->delete();
+    public function delete(Request $request){
+        // emailからUserを取得する。
+        $user = User::where('email', $request->email)->first();
 
-        return redirect()->action('ScholarshipController@index', ['name' => $request->name, 'email' => $request->email, 'title' => $request->title]);
+        // Userの指定された明細IDのレコードを削除
+        $user->meisais()->where('meisai_id', $request->searchID)->delete();
+
+        return redirect()->action('ScholarshipController@index', ['name' => $request->name, 'email' => $request->email]);
     }
 
     /**
@@ -127,8 +124,7 @@ class ScholarshipController extends Controller
      * @param Request $request
      * @return \Symfony\Component\HttpFoundation\BinaryFileResponse
      */
-    public function csv(Request $request)
-    {
+    public function csv(Request $request){
         $fileName = '明細' . '.csv';
 
         $csvFileName = "/Users/junya_sato/Downloads/" . $fileName;
@@ -148,8 +144,8 @@ class ScholarshipController extends Controller
             $maxID = $request->searchID;
             $minID = $request->searchID;
         } else {
-            $maxID = $user->meisais()->max('id');
-            $minID = $user->meisais()->min('id');
+            $maxID = $user->meisais()->max('meisai_id');
+            $minID = $user->meisais()->min('meisai_id');
         }
 
         $meisais = $user->meisais()->moreThan($minID)->lessThan($maxID)->get();
@@ -163,22 +159,34 @@ class ScholarshipController extends Controller
         return Response::download($csvFileName, $fileName);
     }
 
+    /**
+     * @param Request $request
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     public function search(Request $request){
-        $this->validate($request, [
-            'input' => 'required'
-        ],[
-            'input.required' => '検索条件が入力されていません'
-        ]);
 
+//        var_dump($request->searchID);
         // emailからUserを取得する。
         $user = User::where('email', $request->email)->first();
 
-        $meisais = $user->meisais()->usefulEquals($request->kensakuItem, $request->input, $request->joken)->paginate(15);
+        $query = $user->meisais();
 
+        if(isset($request->searchID)){
+            $maxID = (int)$request->searchID;
+            $minID = (int)$request->searchID;
+        }
+        else {
+            $maxID = $user->meisais()->max('meisai_id');
+            $minID = $user->meisais()->min('meisai_id');
+        }
+
+        $query = $query->moreThan($minID)->lessThan($maxID);
+
+        $meisais = $query->get();
+//        var_dump($meisais[0]->meisai_id);
         return view('show', [
             'email' => $request->email,
             'name' => $request->name,
-            'title' => $request->title,
             'items' => $meisais,
             'msg' => '',
         ]);
