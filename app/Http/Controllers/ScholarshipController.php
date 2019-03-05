@@ -237,5 +237,30 @@ class ScholarshipController extends Controller{
             'email' => $request->email,
         ]);
     }
+
+    public function preSet(Request $request){
+
+        $user = User::where('email', $request->email)->first();
+
+        $meisais = $user->meisais()->orderBy('meisai_id', 'asc')->get();
+
+        foreach ($meisais as $meisai){
+            $years[date('Y', strtotime($meisai->hikibi . '+0 day'))] = date('Y', strtotime($meisai->hikibi . '+0 day'));
+        }
+
+        return view('prepayset', [
+            'name' => $request->name,
+            'email' => $request->email,
+            'years' => $years,
+            'msg' => '奨学金の残額は ' . $meisais[0]->zangaku . ' です',
+        ]);
+    }
+
+    public function prePay(Request $request){
+
+        $user = User::where('email', $request->email)->first();
+
+        var_dump($user);
+    }
 }
  

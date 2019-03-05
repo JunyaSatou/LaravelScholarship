@@ -2,17 +2,14 @@
 
 <style>
     #logout {
-        margin-top:20px;
+        margin-top: 20px;
         text-align: center;
     }
-    #menu table{
-        /*position: relative;*/
+
+    #menu table {
         table-layout: auto;
         font-size: 10pt;
         height: 10%;
-    }
-    #menu td{
-        padding-top: 15px;
     }
 </style>
 @section ('title', 'MENU')
@@ -22,38 +19,26 @@
         <table border="1" align="center">
             <tr>
                 <th style="text-align: center;" width="200">新規シミュレーション</th>
-                <td align="center" valign="middle" width="200">
-                    <form action="/login/setting" method="POST">
-                        {{ csrf_field() }}
-                        <input type="hidden" name="name" value="{{$name}}">
-                        <input type="hidden" name="email" value="{{$email}}">
+                <form action="/login/setting" method="POST">
+                    {{ csrf_field() }}
+                    <input type="hidden" name="name" value="{{$name}}">
+                    <input type="hidden" name="email" value="{{$email}}">
+                    <td align="center" width="200">
                         <input type="submit" value="新規シミュレーション">
-                    </form>
-                </td>
-            </tr>
-            <tr>
-                <th style="text-align: center;">繰上げシミュレーション</th>
-                <td align="center" valign="middle" width="200">
-                    <form action="/login/show" method="POST">
-                        {{ csrf_field() }}
-                        <input type="hidden" name="name" value="{{$name}}">
-                        <input type="hidden" name="email" value="{{$email}}">
-                        <input type="hidden" name="title" value="シミュレーション">
-                        <input type="submit" value="繰上げシミュレーション">
-                    </form>
-                </td>
+                    </td>
+                </form>
             </tr>
             <tr>
                 <th style="text-align: center;">履歴から復元</th>
-                <td align="center" valign="middle" width="200">
-                    <form action="/login/show" method="POST">
-                        {{ csrf_field() }}
-                        <input type="hidden" name="name" value="{{$name}}">
-                        <input type="hidden" name="email" value="{{$email}}">
-                        <input type="hidden" name="title" value="シミュレーション">
+                <form action="/login/show" method="POST">
+                    {{ csrf_field() }}
+                    <input type="hidden" name="name" value="{{$name}}">
+                    <input type="hidden" name="email" value="{{$email}}">
+                    <input type="hidden" name="title" value="シミュレーション">
+                    <td align="center" width="200">
                         <input type="submit" value="履歴から復元">
-                    </form>
-                </td>
+                    </td>
+                </form>
             </tr>
         </table>
     </div>
