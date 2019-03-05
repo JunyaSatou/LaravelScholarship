@@ -28,5 +28,7 @@ Route::post('login/create', 'ScholarshipController@create');
 Route::get('login/del', 'ScholarshipController@delete');
 Route::get('login/detail', 'ScholarshipController@detail');
 Route::get('login/csv', 'ScholarshipController@csv');
+Route::get('login/search', 'ScholarshipController@search');
 Route::post('login/search', 'ScholarshipController@search');
+Route::post('login/viewMenu', 'ScholarshipController@viewMenu');
 

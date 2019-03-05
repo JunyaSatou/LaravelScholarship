@@ -17,9 +17,9 @@ class CreateMeisaisTable extends Migration
             $table->increments('id');
             $table->integer('meisai_id');
             $table->string('email');
-            $table->string('zankai');
+            $table->integer('zankai');
             $table->string('zangaku');
-            $table->string('hikibi');
+            $table->timestamp('hikibi');
             $table->string('hensaigaku');
             $table->string('hensaimoto');
             $table->string('suerisoku');

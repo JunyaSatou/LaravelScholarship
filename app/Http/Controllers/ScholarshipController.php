@@ -38,7 +38,7 @@ class ScholarshipController extends Controller{
         }
 
         if(isset($maxID) && isset($minID)){
-            $meisais = $user->meisais()->moreThan($minID)->lessThan($maxID)->paginate(15);
+            $meisais = $user->meisais()->moreThanID($minID)->lessThanID($maxID)->paginate(15);
         }
         else{
             $meisais = $user->meisais()->get();
@@ -88,20 +88,6 @@ class ScholarshipController extends Controller{
         ]);
     }
 
-    public function detail(Request $request){
-        // emailからUserを取得する。
-        $user = User::where('email', $request->email)->first();
-
-        // Userの指定された明細IDのレコードを取得
-        $meisais = $user->meisais()->where('meisai_id', $request->searchID)->get();
-
-        return view('detail', [
-            'email' => $request->email,
-            'name' => $request->name,
-            'items' => $meisais,
-        ]);
-    }
-
     /**
      * 削除ボタンが押下されたときに明細を削除する。
      *
@@ -148,10 +134,10 @@ class ScholarshipController extends Controller{
             $minID = $user->meisais()->min('meisai_id');
         }
 
-        $meisais = $user->meisais()->moreThan($minID)->lessThan($maxID)->get();
+        $meisais = $user->meisais()->moreThanID($minID)->lessThanID($maxID)->get();
 
         foreach ($meisais as $meisai) {
-            fputcsv($res, [$meisai->meisai_id, $meisai->zankai, $meisai->zangaku, $meisai->hikibi, $meisai->hensaigaku, $meisai->hensaimoto, $meisai->suerisoku, $meisai->risoku, $meisai->hasu, $meisai->atozangaku,]);
+            fputcsv($res, [str_pad($meisai->meisai_id,4,0,STR_PAD_LEFT), $meisai->zankai . '回' , $meisai->zangaku, date('Y年n月j日', strtotime($meisai->hikibi . '+0 day')), $meisai->hensaigaku, $meisai->hensaimoto, $meisai->suerisoku, $meisai->risoku, $meisai->hasu, $meisai->atozangaku,]);
         }
 
         fclose($res);
@@ -160,35 +146,95 @@ class ScholarshipController extends Controller{
     }
 
     /**
+     * 検索条件に該当するデータを抽出する
+     *
      * @param Request $request
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function search(Request $request){
 
-//        var_dump($request->searchID);
         // emailからUserを取得する。
         $user = User::where('email', $request->email)->first();
 
+        // Queryの基本形を作成
         $query = $user->meisais();
 
+        $maxID = $user->meisais()->max('meisai_id');
+        $minID = $user->meisais()->min('meisai_id');
+        $minDate = date('1900-01-01 00:00:00');
+        $maxDate = date('2100-01-31 00:00:00');
+        $minZankai = 0;
+        $maxZankai = 240;
+
+        // 明細IDによる検索条件を追加
         if(isset($request->searchID)){
-            $maxID = (int)$request->searchID;
             $minID = (int)$request->searchID;
-        }
-        else {
-            $maxID = $user->meisais()->max('meisai_id');
-            $minID = $user->meisais()->min('meisai_id');
+            $maxID = (int)$request->searchID;
         }
 
-        $query = $query->moreThan($minID)->lessThan($maxID);
+        // 明細IDによる検索条件を追加
+        if(isset($request->searchID2)){
+            $maxID = (int)$request->searchID2;
+        }
 
-        $meisais = $query->get();
-//        var_dump($meisais[0]->meisai_id);
-        return view('show', [
+        // 引落年月による検索条件を追加
+        if (isset($request->year)){
+            $minDate = date('Y-m-d H:i:s', strtotime($request->year . "-" . $request->month . "-" . "1" . '+0 month'));
+            $maxDate = date('Y-m-d H:i:s', strtotime($request->year . "-" . $request->month . "-" . "31" . '+0 month'));
+        }
+
+        // 引落年月による検索条件を追加
+        if (isset($request->year2)){
+            $maxDate = date('Y-m-d H:i:s', strtotime($request->year2 . "-" . $request->month2 . "-" . "31" . '+0 month'));
+        }
+
+        // 残り回数による検索条件を追加
+        if (isset($request->zankai)){
+            $minZankai = $request->zankai;
+            $maxZankai = $request->zankai;
+        }
+
+        // 残り回数による検索条件を追加
+        if (isset($request->zankai2)){
+            $maxZankai = $request->zankai2;
+        }
+
+        $meisais = $query
+            ->moreThanID($minID)
+            ->lessThanID($maxID)
+            ->moreThanHikibi($minDate)
+            ->lessThanHikibi($maxDate)
+            ->moreThanZankai($minZankai)
+            ->LessThanZankai($maxZankai)
+            ->paginate(15);
+
+        return view('detail', [
             'email' => $request->email,
             'name' => $request->name,
             'items' => $meisais,
             'msg' => '',
+            'title' => $request->title,
+            'searchID' => $minID,
+            'searchID2' => $maxID,
+            'year' => date('Y', strtotime( $minDate . '+0 month')),
+            'month' => date('n', strtotime( $minDate . '+0 month')),
+            'year2' => date('Y', strtotime( $maxDate . '+0 month')),
+            'month2' => date('n', strtotime( $maxDate . '+0 month')),
+            'zankai' => $minZankai,
+            'zankai2' => $maxZankai,
+        ]);
+    }
+
+    /**
+     * メニューに戻るボタンの処理
+     *
+     * @param Request $request
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function viewMenu(Request $request){
+        return view('index', [
+            'name' => $request->name,
+            'email' => $request->email,
         ]);
     }
 }

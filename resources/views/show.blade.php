@@ -1,12 +1,6 @@
 @extends('layouts.base')
 
 <style>
-    #col1 {
-        background-color: #87CEEB;
-        color: #000;
-        text-align: center;
-    }
-
     .pagination {
         /*font-size: 15pt;*/
         text-align: center;
@@ -24,13 +18,9 @@
 
     #searchField {
         position: relative;
-        margin-top: 1em;
-        margin-left: 155px;
-        margin-bottom: 30px;
-        padding: 0em 2em;
+        margin: 10px 100px 10px 100px;
+        padding: 20px 50px 0px 50px;
 
-        width: 1100px;
-        height: 150px;
         border: 1px solid #818182;
     }
 
@@ -40,57 +30,113 @@
         left: 0;
 
         font-size: 1em;
-        padding: 0 1em;
-        margin: 0;
+        padding: 0px 4px 0px 4px;
         background-color: #f8fafc;
         color: black;
-        transform: translateY(-50%) translateX(1em);
+        transform: translateY(-130%) translateX(1em);
         letter-spacing: 5px
     }
 
     #searchField table {
-        margin-top: -20px;
-        margin-left: 10px;
-        width: 1000px;
-        height: 120px;
-        /*background-color: red;*/
+        position: relative;
+        table-layout: auto;
+        width: 100%;
+        height: 5%;
     }
 
     #searchField #submit {
-        margin-top: -20px;
+        margin-top: 20px;
     }
 
     #searchField .rows {
         margin-top: -20px;
         height: 10px;
     }
+    #showField{
+        margin: 30px 100px 30px 100px;
+    }
+    #showField table{
+        table-layout: auto;
+        width: 100%;
+    }
+    #showField #col1 {
+        background-color: #87CEEB;
+        color: #000;
+        text-align: center;
+    }
 </style>
 @section('title', "シミュレーション")
 
 <script type="text/javascript">
     function submitAfterValidation(){
-        var invalid = false;
-        if (document.searchForm.searchID.value.length == 0
-            && document.searchForm.zankai.value.length == 0
+        if(document.searchForm.searchID.value.length == 0
             && (document.searchForm.year.value.length == 0
-                || document.searchForm.month.value.length == 0)){
-                alert("検索条件が未入力です");
+            || document.searchForm.month.value.length == 0)
+            && document.searchForm.zankai.value.length == 0){
+            alert('検索条件が設定されていません')
+            return;
+    }
+
+        if (document.searchForm.searchID2.value.length > 0){
+            if (document.searchForm.searchID.value.length == 0){
+                document.searchForm.searchID.focus();
+                alert('明細IDが入力されていません')
                 return;
+            }
         }
-        if (document.searchForm.searchID.value.length > 0){
-            if(isNaN(document.searchForm.searchID.value)){
-                alert('明細IDが数字ではありません')
+        if (document.searchForm.year.value.length > 0){
+            if (document.searchForm.month.value.length == 0){
+                document.searchForm.month.focus();
+                alert('月が選択されていません')
+                return;
+            }
+        }
+        if (document.searchForm.year2.value.length > 0){
+            if (document.searchForm.month2.value.length == 0){
+                document.searchForm.month2.focus();
+                alert('月が選択されていません')
+                return;
+            }
+        }
+        if (document.searchForm.month.value.length > 0){
+            if (document.searchForm.year.value.length == 0){
+                document.searchForm.year.focus();
+                alert('年が選択されていません')
+                return;
+            }
+        }
+        if (document.searchForm.month2.value.length > 0){
+            if (document.searchForm.year2.value.length == 0){
+                document.searchForm.year2.focus();
+                alert('年が選択されていません')
+                return;
+            }
+        }
+
+        if (document.searchForm.year2.value.length > 0){
+            if (document.searchForm.year.value.length == 0){
+                document.searchForm.year.focus();
+                alert('年が選択されていません')
+                return;
+            }
+        }
+        if (document.searchForm.zankai2.value.length > 0){
+            if (document.searchForm.zankai.value.length == 0){
+                document.searchForm.zankai.focus();
+                alert('残り回数が選択されていません')
                 return;
             }
         }
         document.searchForm.submit();
     }
-    // $("#searchForm").submit(function(){
-    //     if($("input[searchID='searchID']").val() == ''){
-    //         alert('入力してください');
-    //         return false;
-    //     }
-    // })
+
+    function deletePost(e) {
+        'use strict';
+
+        if (confirm('本当に削除していいですか?')) {
+            document.getElementById('form_' + e.dataset.id).submit();
+        }
+    }
 </script>
 @section('content')
     <section id="show">
@@ -103,13 +149,15 @@
                     {{ csrf_field() }}
                     <input type="hidden" name="name" value="{{$name}}">
                     <input type="hidden" name="email" value="{{$email}}">
+                    <input type="hidden" name="title" value="検索結果">
                     <table>
                         <tr class="rows">
-                            <th width="80" style="text-align: right;">明細ID：</th>
-                            <td width="200"><input size="10" type="text" name="searchID"></td>
-                            <td width="50"></td>
-                            <th width="80" style="text-align: right;">引落年月：</th>
-                            <td width="200">
+                            <th width="70" style="text-align: right;">明細ID：</th>
+                            <td width="70"><input type="number" min="1" max="240" style="width: 70px" name="searchID"></td>
+                            <td width="5">〜</td>
+                            <td width="70"><input type="number" min="1" max="240" style="width: 70px" name="searchID2"></td>
+                            <th style="text-align: right;">引落年月：</th>
+                            <td width="160">
                                 <select name="year">
                                     <option value="" selected>年</option>
                                     @for($i = (int)date('Y') - 20; $i <= (int)date('Y') + 20; $i++)
@@ -122,14 +170,30 @@
                                         <option value="{{$i}}">{{$i}}月</option>
                                     @endfor
                                 </select>
-                            <td width="50"></td>
-                            <th width="100" style="text-align: right;">残り回数：</th>
-                            <td width="180"><input size="10" type="text" name="zankai">回</td>
+                            </td>
+                            <td width="5">〜</td>
+                            <td width="160">
+                                <select name="year2">
+                                    <option value="" selected>年</option>
+                                    @for($i = (int)date('Y') - 20; $i <= (int)date('Y') + 20; $i++)
+                                        <option value="{{$i}}">{{$i}}月</option>
+                                    @endfor
+                                </select>
+                                <select name="month2">
+                                    <option value="" selected>月</option>
+                                    @for($i = 1; $i <= 12; $i++)
+                                        <option value="{{$i}}">{{$i}}月</option>
+                                    @endfor
+                                </select>
+                            </td>
+                            <th style="text-align: right;">残り回数：</th>
+                            <td width="90"><input type="number" min="0" max="240" step="1" style="width: 70px" name="zankai">回</td>
+                            <td width="5">〜</td>
+                            <td width="90"><input type="number" min="0" max="240" step="1" style="width: 70px" name="zankai2">回</td>
                         </tr>
                     </table>
                     <div id="submit" align="center">
                         <input type="button" value="検索" onclick="submitAfterValidation()">
-                        {{--<input type="submit" id="submit" value="検索">--}}
                     </div>
                 </form>
             </div>
@@ -137,40 +201,41 @@
                 <table align="center" border="1">
                     <thead>
                     <tr id="col1">
-                        <th width="80">明細ID</th>
-                        <th width="80">残り回数</th>
-                        <th width="120">残額</th>
-                        <th width="140">引落日</th>
-                        <th width="120">返済金額</th>
-                        <th width="120">返済元金</th>
-                        <th width="80">据置利息</th>
-                        <th width="80">利息</th>
-                        <th width="80">端数</th>
-                        <th width="120">引落後残額</th>
-                        <th width="80">削除</th>
+                        <th>明細ID</th>
+                        <th>残り回数</th>
+                        <th>残額</th>
+                        <th>引落日</th>
+                        <th>返済金額</th>
+                        <th>返済元金</th>
+                        <th>据置利息</th>
+                        <th>利息</th>
+                        <th>端数</th>
+                        <th>引落後残額</th>
+                        <th>削除</th>
                     </tr>
                     </thead>
                     <tbody>
                     @foreach ($items as $item)
                         <tr>
-                            <td width="80" align="center"><a href="detail?name={{$name}}&email={{$email}}&searchID={{$item->meisai_id}}">{{str_pad($item->meisai_id,4,0,STR_PAD_LEFT)}}</a>
+                            <td align="center"><a href="search?name={{$name}}&email={{$email}}&title=詳細&searchID={{$item->meisai_id}}">{{str_pad($item->meisai_id,4,0,STR_PAD_LEFT)}}</a>
                             </td>
-                            <td width="80">{{$item->zankai}}</td>
-                            <td width="120">{{$item->zangaku}}</td>
-                            <td width="140">{{$item->hikibi}}</td>
-                            <td width="120">{{$item->hensaigaku}}</td>
-                            <td width="120">{{$item->hensaimoto}}</td>
-                            <td width="80">{{$item->suerisoku}}</td>
-                            <td width="80">{{$item->risoku}}</td>
-                            <td width="80">{{$item->hasu}}</td>
-                            <td width="120">{{$item->atozangaku}}</td>
-                            <td width="80" align="center"><a href="del?name={{$name}}&email={{$email}}&searchID={{$item->meisai_id}}">削除</a>
+                            <td>{{$item->zankai}}回</td>
+                            <td>{{$item->zangaku}}</td>
+                            <td>{{date('Y年n月j日', strtotime($item->hikibi . '+0 day'))}}</td>
+                            <td>{{$item->hensaigaku}}</td>
+                            <td>{{$item->hensaimoto}}</td>
+                            <td>{{$item->suerisoku}}</td>
+                            <td>{{$item->risoku}}</td>
+                            <td>{{$item->hasu}}</td>
+                            <td>{{$item->atozangaku}}</td>
+                            <td align="center"><a href="del?name={{$name}}&email={{$email}}&searchID={{$item->meisai_id}}" onclick="deletePost(this)">削除</a>
                             </td>
                         </tr>
                     @endforeach
                     </tbody>
                 </table>
                 <div id="links" align="center">
+                    {{--{{ $items->appends(['email' => $email, 'name' => $name, 'searchID' => $searchID, 'searchID2' => $searchID2,  'year' => $year, 'month' => $month, 'year2' => $year2, 'month2' => $month2, 'zankai' => $zankai, 'zankai2' => $zankai2])->onEachSide(1)->links() }}--}}
                     {{ $items->appends(['email' => $email, 'name' => $name])->onEachSide(1)->links() }}
                 </div>
             </div>
@@ -185,7 +250,7 @@
                     <input class="submit_button" type="button" value="CSV出力"
                            onclick="location.href='csv?name={{$name}}&email={{$email}}'">
                 </td>
-                <form action="/login" method="POST">
+                <form action="/login/viewMenu" method="POST">
                     {{ csrf_field() }}
                     <input type="hidden" name="name" value="{{$name}}">
                     <input type="hidden" name="email" value="{{$email}}">
