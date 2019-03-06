@@ -36,6 +36,7 @@
                 color: #ccc;
             }
         </style>
+        @yield('script')
     </head>
 
     <body>

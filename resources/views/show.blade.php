@@ -31,7 +31,7 @@
         left: 0;
 
         font-size: 1em;
-        padding: 0px 4px 0px 4px;
+        padding: 0px 10px 0px 10px;
         background-color: #f8fafc;
         color: black;
         transform: translateY(-130%) translateX(1em);
@@ -54,6 +54,7 @@
     #searchField #submit {
         display: block;
         margin-top: 40px;
+        margin-right: 120px;
     }
 
     #searchField .rows {
@@ -78,133 +79,104 @@
 </style>
 @section('title', "シミュレーション")
 
-<script type="text/javascript">
-    function submitAfterValidation() {
-        if (document.searchForm.searchID.value.length == 0
-            && (document.searchForm.year.value.length == 0
-                || document.searchForm.month.value.length == 0)
-            && document.searchForm.zankai.value.length == 0) {
-            alert('検索条件が設定されていません')
-            return;
+@section('script')
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.0/jquery.min.js"></script>
+    <script>
+        function submitAfterValidation() {
+            if (document.searchForm.searchID.value.length == 0
+                && (document.searchForm.year.value.length == 0
+                    || document.searchForm.month.value.length == 0)
+                && document.searchForm.zankai.value.length == 0) {
+                alert('検索条件が設定されていません')
+                return;
+            }
+
+            if (document.searchForm.searchID2.value.length > 0) {
+                if (document.searchForm.searchID.value.length == 0) {
+                    document.searchForm.searchID.focus();
+                    alert('明細IDが入力されていません')
+                    return;
+                }
+            }
+            if (document.searchForm.year.value.length > 0) {
+                if (document.searchForm.month.value.length == 0) {
+                    document.searchForm.month.focus();
+                    alert('月が選択されていません')
+                    return;
+                }
+            }
+            if (document.searchForm.year2.value.length > 0) {
+                if (document.searchForm.month2.value.length == 0) {
+                    document.searchForm.month2.focus();
+                    alert('月が選択されていません')
+                    return;
+                }
+            }
+            if (document.searchForm.month.value.length > 0) {
+                if (document.searchForm.year.value.length == 0) {
+                    document.searchForm.year.focus();
+                    alert('年が選択されていません')
+                    return;
+                }
+            }
+            if (document.searchForm.month2.value.length > 0) {
+                if (document.searchForm.year2.value.length == 0) {
+                    document.searchForm.year2.focus();
+                    alert('年が選択されていません')
+                    return;
+                }
+            }
+
+            if (document.searchForm.year2.value.length > 0) {
+                if (document.searchForm.year.value.length == 0) {
+                    document.searchForm.year.focus();
+                    alert('年が選択されていません')
+                    return;
+                }
+            }
+            if (document.searchForm.zankai2.value.length > 0) {
+                if (document.searchForm.zankai.value.length == 0) {
+                    document.searchForm.zankai.focus();
+                    alert('残り回数が選択されていません')
+                    return;
+                }
+            }
+            document.searchForm.submit();
         }
 
-        if (document.searchForm.searchID2.value.length > 0) {
-            if (document.searchForm.searchID.value.length == 0) {
-                document.searchForm.searchID.focus();
-                alert('明細IDが入力されていません')
-                return;
-            }
-        }
-        if (document.searchForm.year.value.length > 0) {
-            if (document.searchForm.month.value.length == 0) {
-                document.searchForm.month.focus();
-                alert('月が選択されていません')
-                return;
-            }
-        }
-        if (document.searchForm.year2.value.length > 0) {
-            if (document.searchForm.month2.value.length == 0) {
-                document.searchForm.month2.focus();
-                alert('月が選択されていません')
-                return;
-            }
-        }
-        if (document.searchForm.month.value.length > 0) {
-            if (document.searchForm.year.value.length == 0) {
-                document.searchForm.year.focus();
-                alert('年が選択されていません')
-                return;
-            }
-        }
-        if (document.searchForm.month2.value.length > 0) {
-            if (document.searchForm.year2.value.length == 0) {
-                document.searchForm.year2.focus();
-                alert('年が選択されていません')
-                return;
-            }
-        }
-
-        if (document.searchForm.year2.value.length > 0) {
-            if (document.searchForm.year.value.length == 0) {
-                document.searchForm.year.focus();
-                alert('年が選択されていません')
-                return;
-            }
-        }
-        if (document.searchForm.zankai2.value.length > 0) {
-            if (document.searchForm.zankai.value.length == 0) {
-                document.searchForm.zankai.focus();
-                alert('残り回数が選択されていません')
-                return;
-            }
-        }
-        document.searchForm.submit();
-    }
-
-</script>
-<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.0/jquery.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/vue@2.5.13/dist/vue.min.js"></script>
-<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-<script>
-    // リロード TODO: ?が無い場合対応
-    function keep_scroll_reload() {
-        var re = /&page_x=(\d+)&page_y=(\d+)/;
-        var position = '&page_x=' + document.body.scrollLeft + '&page_y=' + document.body.scrollTop;
-        if(!window.location.href.match(re)) {
-            //初回
-            window.location.href = window.location.href + position;
-        } else {
-            //2回目以降
-            window.location.href = window.location.href.replace(/&page_x=(\d+)&page_y=(\d+)/,position);
-        }
-    }
-
-    // スクロール位置を復元
-    function restore_scroll() {
-        var re = /&page_x=(\d+)&page_y=(\d+)/;
-        if(window.location.href.match(re)) {
-            var position = window.location.href.match(re)
-            window.scrollTo(position[1],position[2]);
-        }
-    }
-
-    // 削除ボタン押下
-    $(function () {
-        $('.delete_button').on('click', function () {
-            if (confirm('本当に削除していいですか?')) {
-                $.ajax({
-                    // headers: {
-                    //     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                    // },
-                    url: '/login/del',
-                    type: 'get',
-                    data: {
-                        name: '{{$name}}',
-                        email: '{{$email}}',
-                        searchID: $(this).attr('title')
-                    },
-                    // success: function() {
-                    //     console.log("Ajax成功");
-                    // }
-                })
-                // Ajaxリクエストが成功した場合
-                .done(function (data) {
-                    alert("削除しました。");
-                    keep_scroll_reload()
-                    location.reload();
-                    restore_scroll();
-                })
-                // Ajaxリクエストが失敗した場合
-                .fail(function (data) {
-                    alert(data.responseJSON);
-                });
-            }
-            return false;
+        // 削除ボタン押下
+        $(function () {
+            $('.delete_button').on('click', function () {
+                if (confirm('本当に削除していいですか?')) {
+                    $.ajax({
+                        url: '/login/ajax_del',
+                        type: 'get',
+                        data: {
+                            name: '{{$name}}',
+                            email: '{{$email}}',
+                            searchID: $(this).attr('title')
+                        },
+                    })
+                    // Ajaxリクエストが成功した場合
+                        .done(function (data) {
+                            alert("削除しました。");
+                            // $('#item_'+$(this).attr('title')).css("display","none");
+                            location.reload();
+                        })
+                        // Ajaxリクエストが失敗した場合
+                        .fail(function (data) {
+                            alert(data.responseJSON);
+                        });
+                    return true;
+                }
+                return false;
+            });
         });
-    });
-</script>
+    </script>
+@endsection
+
 @section('content')
-    <section id="show">
+    <div id="show">
         @if (count($items) == 0)
             <p align="center">履歴が存在しません</p>
         @else
@@ -218,20 +190,20 @@
                     <table>
                         <tr class="rows">
                             <th width="70" style="text-align: right;">明細ID：</th>
-                            <td width="70"><input type="number" min="1" max="240" style="width: 70px" name="searchID">
+                            <td width="70"><input id="searchID" type="number" min="1" max="240" style="width: 70px" name="searchID">
                             </td>
                             <td width="5">〜</td>
-                            <td width="70"><input type="number" min="1" max="240" style="width: 70px" name="searchID2">
+                            <td width="70"><input id="searchID2" type="number" min="1" max="240" style="width: 70px" name="searchID2">
                             </td>
                             <th style="text-align: right;">引落年月：</th>
-                            <td width="160">
-                                <select name="year">
+                            <td width="150">
+                                <select id="year" name="year">
                                     <option value="" selected>年</option>
                                     @for($i = (int)date('Y') - 20; $i <= (int)date('Y') + 20; $i++)
                                         <option value="{{$i}}">{{$i}}月</option>
                                     @endfor
                                 </select>
-                                <select name="month">
+                                <select id="month" name="month">
                                     <option value="" selected>月</option>
                                     @for($i = 1; $i <= 12; $i++)
                                         <option value="{{$i}}">{{$i}}月</option>
@@ -240,13 +212,13 @@
                             </td>
                             <td width="5">〜</td>
                             <td width="160">
-                                <select name="year2">
+                                <select id="year2" name="year2">
                                     <option value="" selected>年</option>
                                     @for($i = (int)date('Y') - 20; $i <= (int)date('Y') + 20; $i++)
                                         <option value="{{$i}}">{{$i}}月</option>
                                     @endfor
                                 </select>
-                                <select name="month2">
+                                <select id="month2" name="month2">
                                     <option value="" selected>月</option>
                                     @for($i = 1; $i <= 12; $i++)
                                         <option value="{{$i}}">{{$i}}月</option>
@@ -254,17 +226,13 @@
                                 </select>
                             </td>
                             <th style="text-align: right;">残り回数：</th>
-                            <td width="90"><input type="number" min="0" max="240" step="1" style="width: 70px"
-                                                  name="zankai">回
-                            </td>
+                            <td width="90"><input id="zankai" type="number" min="0" max="240" step="1" style="width: 70px" name="zankai">回</td>
                             <td width="5">〜</td>
-                            <td width="90"><input type="number" min="0" max="240" step="1" style="width: 70px"
-                                                  name="zankai2">回
-                            </td>
+                            <td width="90"><input id="zanakai2" type="number" min="0" max="240" step="1" style="width: 70px" name="zankai2">回</td>
                         </tr>
                     </table>
                     <div id="csvout">
-                        <input type="button" value="CSV出力"
+                        <input style="width: 120px;" type="button" value="CSV出力"
                                onclick="location.href='csv?name={{$name}}&email={{$email}}'">
                     </div>
                     <div id="submit" align="center">
@@ -294,7 +262,7 @@
                     </thead>
                     <tbody>
                     @foreach ($items as $item)
-                        <tr>
+                        <tr id="item_{{$item->meisai_id}}">
                             <td align="center"><a
                                         href="search?name={{$name}}&email={{$email}}&title=詳細&searchID={{$item->meisai_id}}">{{str_pad($item->meisai_id,4,0,STR_PAD_LEFT)}}</a>
                             </td>
@@ -307,11 +275,11 @@
                             <td>{{$item->risoku}}</td>
                             <td>{{$item->hasu}}</td>
                             <td>{{$item->atozangaku}}</td>
-                            <form name="deleteField">
-                                <td align="center">
-                                    <a href="#" class="delete_button" title="{{$item->meisai_id}}">削除</a>
-                                </td>
-                            </form>
+                            <td align="center">
+                                <a href="#" class="delete_button" title="{{$item->meisai_id}}">削除</a>
+                                {{--<a href="javascript:void(0)" class="delete_button" title="{{$item->meisai_id}}">削除</a>--}}
+                                {{--<a href="" class="delete_button" title="{{$item->meisai_id}}">削除</a>--}}
+                            </td>
                         </tr>
                     @endforeach
                     </tbody>
@@ -321,8 +289,8 @@
                 </div>
             </div>
         @endif
-    </section>
-    <section id="buttons">
+    <div/>
+    <div id="buttons">
         <table align="center">
             <tr>
                 {{--<form action="/login/preset" method="POST">--}}
@@ -346,7 +314,7 @@
                 </td>
             </tr>
         </table>
-    </section>
+    </div>
 @endsection
 
 @section ('footer')

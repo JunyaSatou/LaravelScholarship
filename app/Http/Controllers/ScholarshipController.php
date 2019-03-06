@@ -94,7 +94,7 @@ class ScholarshipController extends Controller{
      * @param Request $request
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function delete(Request $request){
+    public function ajaxDelete(Request $request){
         // emailからUserを取得する。
         $user = User::where('email', $request->email)->first();
 

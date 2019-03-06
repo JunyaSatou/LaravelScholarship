@@ -35,6 +35,9 @@
         @if (count($items) == 0)
             <p align="center">該当データが存在しません。</p>
         @else
+            <div id="links" align="center">
+                {{ $items->appends(['email' => $email, 'name' => $name, 'title' => $title, 'searchID' => $searchID, 'searchID2' => $searchID2,  'year' => $year, 'month' => $month, 'year2' => $year2, 'month2' => $month2, 'zankai' => $zankai, 'zankai2' => $zankai2])->onEachSide(1)->links() }}
+            </div>
             <table align="center" border="1pt">
                 <thead>
                 <tr id="col1">
