@@ -9,7 +9,7 @@
         color: red;
         font-size: 16pt;
     }
-    #submit_button{
+    #buttonField{
         margin-top: 10pt;
     }
 </style>
@@ -35,8 +35,8 @@
                     <td width="200">password（必須）：</td><td width="300" align="left"><input type="password" name="password" size="45" value="{{old('password')}}"></td>
                 </tr>
             </table>
-            <div id="submit_button" align="center">
-                <input id="submit_button" type="submit" value="ログイン">
+            <div id="menuField" align="center">
+                <input class="menu_buttons" type="submit" value="ログイン">
             </div>
         </form>
     </div>

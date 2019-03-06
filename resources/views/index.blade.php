@@ -6,16 +6,33 @@
         text-align: center;
     }
 
-    #menu table {
+    #contentsField{
+        /*background-color: #2fa360;*/
+    }
+
+    #contentsField table {
         table-layout: auto;
         font-size: 10pt;
-        height: 10%;
+        height: 15%;
+    }
+
+    #contentsField .action_buttons{
+        border-radius: 10px;
+        background-color: #2fa360;
+        width: 200px;
+        height: 40px;
+        font-weight: bold;
+        color: white;
+    }
+
+    #contentsField .action_buttons:hover{
+        background-color: #2fc360;
     }
 </style>
 @section ('title', 'MENU')
 
 @section ('content')
-    <div id="menu">
+    <div id="contentsField">
         <table border="1" align="center">
             <tr>
                 <th style="text-align: center;" width="200">新規シミュレーション</th>
@@ -23,8 +40,8 @@
                     {{ csrf_field() }}
                     <input type="hidden" name="name" value="{{$name}}">
                     <input type="hidden" name="email" value="{{$email}}">
-                    <td align="center" width="200">
-                        <input type="submit" value="新規シミュレーション">
+                    <td align="center" width="230">
+                        <input class="action_buttons" type="submit" value="新規シミュレーション">
                     </td>
                 </form>
             </tr>
@@ -35,15 +52,15 @@
                     <input type="hidden" name="name" value="{{$name}}">
                     <input type="hidden" name="email" value="{{$email}}">
                     <input type="hidden" name="title" value="シミュレーション">
-                    <td align="center" width="200">
-                        <input type="submit" value="履歴から復元">
+                    <td align="center" width="230">
+                        <input class="action_buttons" type="submit" value="履歴から復元">
                     </td>
                 </form>
             </tr>
         </table>
     </div>
-    <div id="logout">
-        <input type="button" value="ログアウト" onclick="location.href='/login'">
+    <div id="menuField" align="center">
+        <input class="menu_buttons" type="button" value="ログアウト" onclick="location.href='/login'">
     </div>
 @endsection
 

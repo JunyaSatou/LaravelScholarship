@@ -65,9 +65,9 @@
                     <td align="left" width="150"><input type="number" name="kingaku" style="width: 100px;" min="0" maxlength="8" minlength="1" oninput="maxLengthCheck(this)" required> 円</td>
                 </tr>
             </table>
-            <table id="buttons" align="center">
-                <td><input type="submit" name="act1" value="シミュレーション開始"></td>
-                <td><input type="button" name="act2" value="前に戻る" onclick="history.back()"></td>
+            <table id="menuField" align="center">
+                <td><input class="menu_buttons" type="submit" name="act1" value="シミュレーション開始"></td>
+                <td><input class="menu_buttons" type="button" name="act2" value="前に戻る" onclick="history.back()"></td>
             </table>
         </form>
     </div>

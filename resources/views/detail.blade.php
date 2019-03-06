@@ -8,7 +8,6 @@
 
     .pagination li {
         display: inline-block;
-        /*background-color: #87CEEB;*/
         border: 1px;
     }
 
@@ -75,10 +74,10 @@
             </div>
         @endif
     </div>
-    <div id="content">
+    <div id="menuField">
         <table align="center">
             <tr>
-                <td><input type="button" value="戻る" onclick="history.back()"></td>
+                <td><input class="menu_buttons" type="button" value="戻る" onclick="history.back()"></td>
             </tr>
         </table>
     </div>
