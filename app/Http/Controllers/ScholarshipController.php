@@ -256,11 +256,17 @@ class ScholarshipController extends Controller{
         ]);
     }
 
-    public function prePay(Request $request){
+    public function ajaxPrePay(Request $request){
 
         $user = User::where('email', $request->email)->first();
 
-        var_dump($user);
+//        \Log::info($user->name);
+//        \Log::info($user->email);
+
+        echo '<table align="center" border="1">';
+        echo '<tr><th>名前</th><th>メールアドレス</th></tr>';
+        echo '<tr><td>' . $user->name . '</td><td>' . $user->email . '</td></tr>';
+        echo '</table>';
     }
 }
  

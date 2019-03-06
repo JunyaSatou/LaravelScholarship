@@ -32,4 +32,4 @@ Route::get('login/search', 'ScholarshipController@search');
 Route::post('login/search', 'ScholarshipController@search');
 Route::post('login/viewMenu', 'ScholarshipController@viewMenu');
 Route::post('login/preset', 'ScholarshipController@preSet');
-Route::post('login/prepay', 'ScholarshipController@prePay');
+Route::get('login/ajax_prepay', 'ScholarshipController@ajaxPrePay');
