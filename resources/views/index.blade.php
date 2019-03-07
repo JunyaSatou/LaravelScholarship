@@ -42,8 +42,7 @@
             </tr>
             <tr>
                 <th style="text-align: center;">履歴から表示</th>
-                <form action="/login/show" method="POST">
-                    {{ csrf_field() }}
+                <form action="/login/show" method="get">
                     <input type="hidden" name="name" value="{{$name}}">
                     <input type="hidden" name="email" value="{{$email}}">
                     <td align="center" width="230">

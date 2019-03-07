@@ -12,15 +12,10 @@
         border: 1px;
     }
 
-
-    #links2 {
-        margin-top: 20px;
-    }
-
     #searchField {
         position: relative;
         margin: 10px 100px 10px 100px;
-        padding: 20px 50px 0px 50px;
+        padding: 20px 30px 0px 30px;
         border: 1px solid #818182;
     }
 
@@ -43,27 +38,14 @@
         height: 5%;
     }
 
-    #searchField #searchButtonField {
-        margin-top: 40px;
-        /*margin: 20px 300px 0px 300px;*/
-        /*width: 200px;*/
+    #searchField #action_buttons{
+        margin-top: 30px;
+        /*padding-left: 20px;*/
+        /*background-color: #9561e2;*/
     }
 
-    #searchButtonField #search_button {
-        border-radius: 10px;
-        background-color: #b9bbbe;
-        font-weight: bold;
-        width: 300px;
-        height: 50px;
-        color: white;
-    }
-
-    #searchButtonField #search_button:hover {
-        background-color: #b9bbde;
-    }
-
-    #csvoutField {
-        margin: 30px 100px 30px 100px;
+    #searchField #csvoutField {
+        /*margin: 00px 100px 30px 100px;*/
         /*margin-top: 30px;*/
         font-size: 20pt;
     }
@@ -82,18 +64,47 @@
     }
 
 
+    #searchField #searchButtonField {
+        /*margin-top: -50px;*/
+        /*margin: 20px 300px 0px 300px;*/
+        /*width: 200px;*/
+    }
+
+    #searchButtonField #search_button {
+        border-radius: 10px;
+        background-color: #b9bbbe;
+        font-weight: bold;
+        width: 300px;
+        height: 50px;
+        color: white;
+    }
+
+    #searchButtonField #search_button:hover {
+        background-color: #b9bbde;
+    }
+
     #searchField .rows {
         margin-top: -20px;
         height: 10px;
     }
+    
+    #showField {
+        margin: 50px 100px 0px 100px;
+    }
 
-    #contentsField {
-        margin: -50px 100px -70px 100px;
+
+    #showField #counter{
+        text-align: left;
+    }
+
+    #showField #links1{
+        margin-top: -45px;
+        height: 45px;
         /*background-color: #9561e2;*/
     }
 
-    #contentsField #showField {
-        /*margin: 30px 100px 30px 100px;*/
+    #showField #links2 {
+        margin-top: 10px;
     }
 
     #showField table {
@@ -214,7 +225,7 @@
                         .fail(function (data) {
                             alert("Ajaxの通信に失敗しました");
                         });
-                    return true;
+                    // return true;
                 }
                 return false;
             });
@@ -229,10 +240,10 @@
             {{ csrf_field() }}
             <input type="hidden" name="name" value="{{$name}}">
             <input type="hidden" name="email" value="{{$email}}">
-            {{--<input type="hidden" name="title" value="検索結果">--}}
+            <input type="hidden" name="title" value="検索結果">
             <table>
                 <tr class="rows">
-                    <th width="70" style="text-align: right;">明細ID：</th>
+                    <th width="80" style="text-align: right;">明細ID：</th>
                     <td width="70"><input id="searchID" type="number" min="1" max="240" style="width: 70px"
                                           name="searchID">
                     </td>
@@ -280,83 +291,98 @@
                     </td>
                 </tr>
             </table>
-            <div id="searchButtonField" align="center">
-                <input id="search_button" type="button" value="検索" onclick="submitAfterValidation()">
-            </div>
-        </form>
-    </div>
-    <div id="csvoutField">
-        <input id="csvout_button" type="button" value="CSVダウンロード"
-               onclick="location.href='csv?name={{$name}}&email={{$email}}'">
-    </div>
-    <div id="prepayField" align="center">
-        <form action="/login/preset" method="POST">
-            {{ csrf_field() }}
-            <input type="hidden" name="name" value="{{$name}}">
-            <input type="hidden" name="email" value="{{$email}}">
-            <input id="prepay_button" type="submit" value="繰上げシミュレーション">
-        </form>
-    </div>
-    <div id="contentsField">
-        <div id="showField">
-            @if (count($items) == 0)
-                <p align="center">履歴が存在しません</p>
-            @else
-                @if ($fitem != '')
-                    <div id="counter" align="right">
-                        {{$fitem}}-{{$litem}}/{{$mitem}}
+            {{--<div id="csvoutField">--}}
+                {{--<input id="csvout_button" type="button" value="CSVダウンロード"--}}
+                       {{--onclick="location.href='csv?name={{$name}}&email={{$email}}'">--}}
+            {{--</div>--}}
+            {{--<div id="searchButtonField" align="center">--}}
+                {{--<input id="search_button" type="button" value="検索" onclick="submitAfterValidation()">--}}
+            {{--</div>--}}
+            <table id="action_buttons" align="center">
+                <td align="center">
+                    <div id="csvoutField">
+                        <input id="csvout_button" type="button" value="CSVダウンロード"
+                               onclick="location.href='csv?name={{$name}}&email={{$email}}'">
                     </div>
-                @endif
-                {{--<div id="links1">--}}
-                {{--{{ $items->appends(['email' => $email, 'name' => $name])->onEachSide(1)->links() }}--}}
-                {{--</div>--}}
-                <table align="center" border="1">
-                    <thead>
-                    <tr id="col1">
-                        <th>明細ID</th>
-                        <th>残り回数</th>
-                        <th>残額</th>
-                        <th>引落日</th>
-                        <th>返済金額</th>
-                        <th>返済元金</th>
-                        <th>据置利息</th>
-                        <th>利息</th>
-                        <th>端数</th>
-                        <th>引落後残額</th>
-                        <th>削除</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    @foreach ($items as $item)
-                        <tr id="item_{{$item->meisai_id}}">
-                            <td align="center"><a
-                                        href="search?name={{$name}}&email={{$email}}&title=詳細&searchID={{$item->meisai_id}}">{{str_pad($item->meisai_id,4,0,STR_PAD_LEFT)}}</a>
-                            </td>
-                            <td>{{$item->zankai}}回</td>
-                            <td>{{$item->zangaku}}</td>
-                            <td>{{date('Y年n月j日', strtotime($item->hikibi . '+0 day'))}}</td>
-                            <td>{{$item->hensaigaku}}</td>
-                            <td>{{$item->hensaimoto}}</td>
-                            <td>{{$item->suerisoku}}</td>
-                            <td>{{$item->risoku}}</td>
-                            <td>{{$item->hasu}}</td>
-                            <td>{{$item->atozangaku}}</td>
-                            <td align="center">
-                                <a href="#" class="delete_button" title="{{$item->meisai_id}}">削除</a>
-                            </td>
-                        </tr>
-                    @endforeach
-                    </tbody>
-                </table>
-                <div id="links2">
-                    {{ $items->appends(['email' => $email, 'name' => $name])->onEachSide(1)->links() }}
+                </td>
+                <td align="center">
+                    <div id="searchButtonField" align="center">
+                        <input id="search_button" type="button" value="検索" onclick="submitAfterValidation()">
+                    </div>
+                </td>
+            </table>
+
+        </form>
+    </div>
+    {{--<div id="prepayField" align="center">--}}
+        {{--<form action="/login/preset" method="POST">--}}
+            {{--{{ csrf_field() }}--}}
+            {{--<input type="hidden" name="name" value="{{$name}}">--}}
+            {{--<input type="hidden" name="email" value="{{$email}}">--}}
+            {{--<input id="prepay_button" type="submit" value="繰上げシミュレーション">--}}
+        {{--</form>--}}
+    {{--</div>--}}
+    <div id="showField">
+        @if (count($items) == 0)
+            <p align="center">履歴が存在しません</p>
+        @else
+            @if ($fitem != '')
+                <div id="counter" align="right">
+                    {{$fitem}}件-{{$litem}}件/{{$mitem}}件
                 </div>
             @endif
-        </div>
+                <div id="links1">
+                    {{ $items->appends(['email' => $email, 'name' => $name])->onEachSide(1)->links() }}
+                </div>
+            <table align="center" border="1">
+                <thead>
+                <tr id="col1">
+                    <th>明細ID</th>
+                    <th>残り回数</th>
+                    <th>残額</th>
+                    <th>引落日</th>
+                    <th>返済金額</th>
+                    <th>返済元金</th>
+                    <th>据置利息</th>
+                    <th>利息</th>
+                    <th>端数</th>
+                    <th>引落後残額</th>
+                    <th>削除</th>
+                </tr>
+                </thead>
+                <tbody>
+                @foreach ($items as $item)
+                    <tr id="item_{{$item->meisai_id}}">
+                        <td align="center"><a
+                                    href="search?name={{$name}}&email={{$email}}&title=詳細&searchID={{$item->meisai_id}}">{{str_pad($item->meisai_id,4,0,STR_PAD_LEFT)}}</a>
+                        </td>
+                        <td>{{$item->zankai}}回</td>
+                        <td>{{$item->zangaku}}</td>
+                        <td>{{date('Y年n月j日', strtotime($item->hikibi . '+0 day'))}}</td>
+                        <td>{{$item->hensaigaku}}</td>
+                        <td>{{$item->hensaimoto}}</td>
+                        <td>{{$item->suerisoku}}</td>
+                        <td>{{$item->risoku}}</td>
+                        <td>{{$item->hasu}}</td>
+                        <td>{{$item->atozangaku}}</td>
+                        <td align="center">
+                            <a href="javascript:void(0);" class="delete_button" title="{{$item->meisai_id}}">削除</a>
+                        </td>
+                    </tr>
+                @endforeach
+                </tbody>
+            </table>
+            <div id="links2">
+                {{ $items->appends(['email' => $email, 'name' => $name])->onEachSide(1)->links() }}
+            </div>
+        @endif
     </div>
     <div id="menuField">
         <table align="center">
             <tr>
+                <td>
+                    <input class="menu_buttons" type="button" value="ログアウト" onclick="location.href='/login'">
+                </td>
                 <form action="/login/viewMenu" method="POST">
                     {{ csrf_field() }}
                     <input type="hidden" name="name" value="{{$name}}">
@@ -365,9 +391,6 @@
                         <input class="menu_buttons" type="submit" value="メニューに戻る">
                     </td>
                 </form>
-                <td>
-                    <input class="menu_buttons" type="button" value="ログアウト" onclick="location.href='/login'">
-                </td>
             </tr>
         </table>
     </div>

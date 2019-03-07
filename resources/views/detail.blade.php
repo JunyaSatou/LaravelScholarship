@@ -11,6 +11,16 @@
         border: 1px;
     }
 
+    #showField #counter{
+        text-align: left;
+    }
+
+    #showField #links1{
+        margin-top: -45px;
+        height: 45px;
+        /*background-color: #9561e2;*/
+    }
+
     #links {
         margin-top: 20px;
     }
@@ -34,7 +44,10 @@
         @if (count($items) == 0)
             <p align="center">該当データが存在しません。</p>
         @else
-            <div id="links" align="center">
+            <div id="counter" align="right">
+                {{$fitem}}件-{{$litem}}件/{{$mitem}}件
+            </div>
+            <div id="links1" align="center">
                 {{ $items->appends(['email' => $email, 'name' => $name, 'title' => $title, 'searchID' => $searchID, 'searchID2' => $searchID2,  'year' => $year, 'month' => $month, 'year2' => $year2, 'month2' => $month2, 'zankai' => $zankai, 'zankai2' => $zankai2])->onEachSide(1)->links() }}
             </div>
             <table align="center" border="1pt">

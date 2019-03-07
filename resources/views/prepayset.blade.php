@@ -25,7 +25,7 @@
             }
         }
 
-        // 削除ボタン押下
+        // 開始ボタン押下
         $(function () {
             $('#start_button').on('click', function () {
                 if($('#kingaku').val() > 0){
@@ -94,8 +94,8 @@
             </tr>
         </table>
         <table id="menuField" align="center">
-            <td><input id="start_button" class="menu_buttons" type="button" name="act1" value="シミュレーション開始"></td>
             <td><input class="menu_buttons" type="button" name="act2" value="前に戻る" onclick="history.back()"></td>
+            <td><input id="start_button" class="menu_buttons" type="button" name="act1" value="開始"></td>
         </table>
     </div>
     <div id="result">

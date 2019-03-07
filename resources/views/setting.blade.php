@@ -35,9 +35,8 @@
             </table>
             <div id="menuField">
                 <table align="center">
+                    <td><input class="menu_buttons" type="button" name="act2" value="前に戻る" onclick="history.back()"></td>
                     <td><input class="menu_buttons" type="submit" name="act1" value="シミュレーション開始"></td>
-                    <td><input class="menu_buttons" type="button" name="act2" value="前に戻る" onclick="history.back()">
-                    </td>
                 </table>
 
             </div>

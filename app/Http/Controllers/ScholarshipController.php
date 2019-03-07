@@ -39,26 +39,25 @@ class ScholarshipController extends Controller{
 
         if(isset($maxID) && isset($minID)){
             $meisais = $user->meisais()->moreThanID($minID)->lessThanID($maxID)->paginate(15);
-//            $fitem = $meisais[$meisais->firstItem()]->meisai_id;
-//            $litem = $meisais[$meisais->lastItem()]->meisai_id;
-//            $mitem = $user->meisais()->count();
+            $fitem = $meisais->firstItem();
+            $litem = $meisais->lastItem();
+            $mitem = $user->meisais()->count();
         }
         else{
             $meisais = $user->meisais()->get();
-//            $fitem = '';
-//            $litem = '';
-//            $mitem = $user->meisais()->count();
+            $fitem = '';
+            $litem = '';
+            $mitem = $user->meisais()->count();
         }
-        var_dump($meisais[0]);
-//        return view('show', [
-//            'email' => $request->email,
-//            'name' => $request->name,
-//            'items' => $meisais,
-//            'fitem' => $fitem,
-//            'litem' => $litem,
-//            'mitem' => $mitem,
-//            'msg' => '',
-//        ]);
+        return view('show', [
+            'email' => $request->email,
+            'name' => $request->name,
+            'items' => $meisais,
+            'fitem' => $fitem,
+            'litem' => $litem,
+            'mitem' => $mitem,
+            'msg' => '',
+        ]);
     }
 
     /**
@@ -80,10 +79,7 @@ class ScholarshipController extends Controller{
         $scholarship->calcurateItems();
         $scholarship->hensaiSimulation();
 
-        return view('show', [
-            'name' => $user->name,
-            'email' => $user->email,
-        ]);
+        return redirect()->action('ScholarshipController@viewShow', ['name' => $request->name, 'email' => $request->email]);
     }
 
     /**
@@ -217,6 +213,10 @@ class ScholarshipController extends Controller{
             ->LessThanZankai($maxZankai)
             ->paginate(15);
 
+        $fitem = $meisais->firstItem();
+        $litem = $meisais->lastItem();
+        $mitem = $user->meisais()->count();
+
         return view('detail', [
             'email' => $request->email,
             'name' => $request->name,
@@ -233,6 +233,9 @@ class ScholarshipController extends Controller{
             'zankai2' => $maxZankai,
             'fitem' => $meisais->firstItem(),
             'litem' => $meisais->lastItem(),
+            'fitem' => $fitem,
+            'litem' => $litem,
+            'mitem' => $mitem,
         ]);
     }
 
