@@ -23,7 +23,7 @@ class ScholarshipController extends Controller{
      * @param Request $request
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function index(Request $request){
+    public function viewShow(Request $request){
 
         // emailからUserを取得する。
         $user = User::where('email', $request->email)->first();
@@ -39,18 +39,26 @@ class ScholarshipController extends Controller{
 
         if(isset($maxID) && isset($minID)){
             $meisais = $user->meisais()->moreThanID($minID)->lessThanID($maxID)->paginate(15);
+//            $fitem = $meisais[$meisais->firstItem()]->meisai_id;
+//            $litem = $meisais[$meisais->lastItem()]->meisai_id;
+//            $mitem = $user->meisais()->count();
         }
         else{
             $meisais = $user->meisais()->get();
+//            $fitem = '';
+//            $litem = '';
+//            $mitem = $user->meisais()->count();
         }
-
-//        var_dump($meisais);
-        return view('show', [
-            'email' => $request->email,
-            'name' => $request->name,
-            'items' => $meisais,
-            'msg' => '',
-        ]);
+        var_dump($meisais[0]);
+//        return view('show', [
+//            'email' => $request->email,
+//            'name' => $request->name,
+//            'items' => $meisais,
+//            'fitem' => $fitem,
+//            'litem' => $litem,
+//            'mitem' => $mitem,
+//            'msg' => '',
+//        ]);
     }
 
     /**
@@ -60,7 +68,7 @@ class ScholarshipController extends Controller{
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      * @throws \Exception
      */
-    public function create(SettingRequest $request){
+    public function create(Request $request){
         // emailからUserを取得する。
         $user = User::where('email', $request->email)->first();
 
@@ -72,7 +80,10 @@ class ScholarshipController extends Controller{
         $scholarship->calcurateItems();
         $scholarship->hensaiSimulation();
 
-        return redirect()->action('ScholarshipController@index', ['name' => $request->name, 'email' => $request->email]);
+        return view('show', [
+            'name' => $user->name,
+            'email' => $user->email,
+        ]);
     }
 
     /**
@@ -81,7 +92,7 @@ class ScholarshipController extends Controller{
      * @param Request $request
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function setting(Request $request){
+    public function viewSet(Request $request){
         return view('setting', [
             'email' => $request->email,
             'name' => $request->name,
@@ -100,8 +111,6 @@ class ScholarshipController extends Controller{
 
         // Userの指定された明細IDのレコードを削除
         $user->meisais()->where('meisai_id', $request->searchID)->delete();
-
-        return redirect()->action('ScholarshipController@index', ['name' => $request->name, 'email' => $request->email]);
     }
 
     /**
@@ -222,6 +231,8 @@ class ScholarshipController extends Controller{
             'month2' => date('n', strtotime( $maxDate . '+0 month')),
             'zankai' => $minZankai,
             'zankai2' => $maxZankai,
+            'fitem' => $meisais->firstItem(),
+            'litem' => $meisais->lastItem(),
         ]);
     }
 
@@ -238,7 +249,7 @@ class ScholarshipController extends Controller{
         ]);
     }
 
-    public function preSet(Request $request){
+    public function viewPreSet(Request $request){
 
         $user = User::where('email', $request->email)->first();
 

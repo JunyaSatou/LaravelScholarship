@@ -1,11 +1,6 @@
 @extends ('layouts.base')
 
 <style>
-    #logout {
-        margin-top: 20px;
-        text-align: center;
-    }
-
     #contentsField{
         /*background-color: #2fa360;*/
     }
@@ -36,7 +31,7 @@
         <table border="1" align="center">
             <tr>
                 <th style="text-align: center;" width="200">新規シミュレーション</th>
-                <form action="/login/setting" method="POST">
+                <form action="/login/set" method="POST">
                     {{ csrf_field() }}
                     <input type="hidden" name="name" value="{{$name}}">
                     <input type="hidden" name="email" value="{{$email}}">
@@ -46,14 +41,13 @@
                 </form>
             </tr>
             <tr>
-                <th style="text-align: center;">履歴から復元</th>
+                <th style="text-align: center;">履歴から表示</th>
                 <form action="/login/show" method="POST">
                     {{ csrf_field() }}
                     <input type="hidden" name="name" value="{{$name}}">
                     <input type="hidden" name="email" value="{{$email}}">
-                    <input type="hidden" name="title" value="シミュレーション">
                     <td align="center" width="230">
-                        <input class="action_buttons" type="submit" value="履歴から復元">
+                        <input class="action_buttons" type="submit" value="履歴から表示">
                     </td>
                 </form>
             </tr>

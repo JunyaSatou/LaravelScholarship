@@ -9,9 +9,6 @@
         color: red;
         font-size: 16pt;
     }
-    #buttonField{
-        margin-top: 10pt;
-    }
 </style>
 
 @section ('title', 'ログイン画面')
@@ -26,13 +23,10 @@
                     <tr class="error" align="right"><th>※ERROR：</th><td align="left">{{$errors->first('email')}}</td></tr>
                 @endif
                 <tr align="right">
-                    <td width="200">email（必須）：</td><td width="300" align="left"><input type="text" name="email" size="45" value="{{old('email')}}"></td>
+                    <td width="200">email（必須）：</td><td width="300" align="left"><input type="text" name="email" size="45" value="{{old('email')}}" required></td>
                 </tr>
-                @if ($errors->has('password'))
-                    <tr class="error" align="right"><th>※ERROR：</th><td align="left">{{$errors->first('password')}}</td></tr>
-                @endif
                 <tr align="right">
-                    <td width="200">password（必須）：</td><td width="300" align="left"><input type="password" name="password" size="45" value="{{old('password')}}"></td>
+                    <td width="200">password（必須）：</td><td width="300" align="left"><input type="password" name="password" size="45" value="{{old('password')}}" minlength="4" required></td>
                 </tr>
             </table>
             <div id="menuField" align="center">

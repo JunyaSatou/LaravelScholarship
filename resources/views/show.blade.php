@@ -88,7 +88,7 @@
     }
 
     #contentsField {
-        margin: -60px 100px -70px 100px;
+        margin: -50px 100px -70px 100px;
         /*background-color: #9561e2;*/
     }
 
@@ -212,7 +212,7 @@
                         })
                         // Ajaxリクエストが失敗した場合
                         .fail(function (data) {
-                            alert(data.responseJSON);
+                            alert("Ajaxの通信に失敗しました");
                         });
                     return true;
                 }
@@ -229,7 +229,7 @@
             {{ csrf_field() }}
             <input type="hidden" name="name" value="{{$name}}">
             <input type="hidden" name="email" value="{{$email}}">
-            <input type="hidden" name="title" value="検索結果">
+            {{--<input type="hidden" name="title" value="検索結果">--}}
             <table>
                 <tr class="rows">
                     <th width="70" style="text-align: right;">明細ID：</th>
@@ -298,13 +298,18 @@
         </form>
     </div>
     <div id="contentsField">
-        @if (count($items) == 0)
-            <p align="center">履歴が存在しません</p>
-        @else
-            <div id="showField">
-                <div id="links1">
-                    {{ $items->appends(['email' => $email, 'name' => $name])->onEachSide(1)->links() }}
-                </div>
+        <div id="showField">
+            @if (count($items) == 0)
+                <p align="center">履歴が存在しません</p>
+            @else
+                @if ($fitem != '')
+                    <div id="counter" align="right">
+                        {{$fitem}}-{{$litem}}/{{$mitem}}
+                    </div>
+                @endif
+                {{--<div id="links1">--}}
+                {{--{{ $items->appends(['email' => $email, 'name' => $name])->onEachSide(1)->links() }}--}}
+                {{--</div>--}}
                 <table align="center" border="1">
                     <thead>
                     <tr id="col1">
@@ -338,8 +343,6 @@
                             <td>{{$item->atozangaku}}</td>
                             <td align="center">
                                 <a href="#" class="delete_button" title="{{$item->meisai_id}}">削除</a>
-                                {{--<a href="javascript:void(0)" class="delete_button" title="{{$item->meisai_id}}">削除</a>--}}
-                                {{--<a href="" class="delete_button" title="{{$item->meisai_id}}">削除</a>--}}
                             </td>
                         </tr>
                     @endforeach
@@ -348,8 +351,8 @@
                 <div id="links2">
                     {{ $items->appends(['email' => $email, 'name' => $name])->onEachSide(1)->links() }}
                 </div>
-            </div>
-        @endif
+            @endif
+        </div>
     </div>
     <div id="menuField">
         <table align="center">
