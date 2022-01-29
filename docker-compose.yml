@@ -1,0 +1,80 @@
+version: '3'
+
+services:
+  web:
+    container_name: laravelscholarship-web
+    build:
+      context: ./etc/docker/web
+      args:
+        APP_ENV: $APP_ENV
+        SERVER_NAME: $SERVER_NAME
+    ports:
+      - "28094:80"
+    env_file: .env
+    links:
+      - app
+    volumes:
+      - .:/var/www/html:cached
+
+  app:
+    container_name: laravelscholarship-app
+    build:
+      context: .
+      dockerfile: ./etc/docker/app/Dockerfile
+      args:
+        GITHUB_ACCESS_TOKEN: $GITHUB_ACCESS_TOKEN
+    volumes:
+      - .:/var/www/html:cached
+    env_file: .env
+    links:
+      - db
+      - redis
+
+  db:
+    container_name: laravelscholarship-db
+    image: postgres:11.9
+    ports:
+      - "55479:5432"
+    volumes:
+      - ./db:/db
+      - postgres-data:/var/lib/postgresql/aplus_card_db
+    environment:
+      - POSTGRES_DB=aplus_card_db
+      - POSTGRES_PASSWORD=Zaq1Zaq1
+      - POSTGRES_USER=aplus_card_db
+      - PGDATA=/var/lib/postgresql/aplus_card_db
+
+  scheduler:
+    container_name: laravelscholarship-scheduler
+    build:
+      context: .
+      dockerfile: ./etc/docker/scheduler/Dockerfile
+      args:
+        GITHUB_ACCESS_TOKEN: $GITHUB_ACCESS_TOKEN
+    volumes:
+      - .:/var/www/html:cached
+    env_file: .env
+    links:
+      - db
+      - redis
+
+  storage:
+    container_name: aplus-storage
+    image: minio/minio:latest
+    env_file: .env
+    ports:
+      - 9050:9000
+    entrypoint: sh
+    volumes:
+      - ./etc/docker/storage/data:/data
+    command: -c "mkdir -p /data/${AWS_BUCKET} && /usr/bin/minio server /data"
+
+  redis:
+    container_name: laravelscholarship-redis
+    image: redis:5.0.7
+    ports:
+      - 20924:6379
+
+volumes:
+  postgres-data:
+    driver: 'local'
